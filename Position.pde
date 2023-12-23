@@ -19,9 +19,10 @@ public class Position {
   int height;
 }
 
-public class PositionManager {
+public static class PositionManager {
   private int width;
   private int height;
+  private PApplet app;
   int getCenterX() {
     return width / 2;
   }
@@ -29,17 +30,27 @@ public class PositionManager {
     return height / 2;
   }
 
-  public PositionManager(int width, int height) {
+  private PositionManager(int width, int height, PApplet app) {
     this.width = width;
     this.height = height;
+    this.app = app;
   }
   void setSize(int width, int height) {
     this.width = width;
     this.height = height;
     applySize();
   }
+
   void applySize() {
-    windowResize(width, height);
+    app.windowResize(width, height);
+  }
+  private static PositionManager instance;
+  static PositionManager getInstance(int width, int height, PApplet app) {
+    instance = new PositionManager(width, height, app);
+    return instance;
+  }
+  static PositionManager getInstance(){
+    return instance;
   }
 
   void posByAnchor(Position posFromAnchor, Anchor anchor) {

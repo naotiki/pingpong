@@ -3,6 +3,7 @@ class Ball extends GameObject{
     super(x,y,20,20);
   }
   
+  
   public void draw(){
     fill(0);
     noStroke(); 

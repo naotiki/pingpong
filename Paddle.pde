@@ -1,7 +1,7 @@
 
-public  class Paddle extends GameObject { //<>//
+public class Bar extends GameObject { //<>//
 
-  public Paddle(float x,float y){
+  public Bar(float x,float y){
     super(x,y,5,100);
   }
   
