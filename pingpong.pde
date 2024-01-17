@@ -1,29 +1,38 @@
 import java.util.List;
 
-final List<GameObject> gameObjects = new ArrayList<GameObject>();
-final Bar player = new Bar(100, 500);
-final PositionManager pos = PositionManager.getInstance(800,600,this);
 
-final Ball ball = new Ball(50,50);
+
+
+
+private final PositionManager positionManager = PositionManager.getInstance(800, 600, this);
+private final SceneManager sceneManager = SceneManager.getInstance();
+private final boolean isDebug = true;
 void setup() {
-  
+
   frameRate(60);
-  pos.applySize();
-  
+  positionManager.applySize();
+  sceneManager.registerScenes(new Scene[]{new MainScene(), new TitleScene()});
+  sceneManager.transition("main");
 }
 
 void draw() {
-  background(255);
-  gameObjects.forEach( (e) -> {
-    e.draw();
-  });
+  background(0);
+  if (isDebug) {
+    drawSceneName();
+  }
+  sceneManager.activeScene.draw();
 }
 
 void keyPressed() {
-  if (keyCode == UP) {
-    player.y-=10;
-  }
-  if (keyCode == DOWN) {
-    player.y+=10;
-  }
+  keyEventManager.keyPressed();
+  sceneManager.activeScene.keyPressed();
+}
+void keyReleased() {
+  keyEventManager.keyReleased();
+}
+
+void drawSceneName() {
+  fill(0, 408, 612, 100);
+  textSize(32);
+  text(sceneManager.activeScene.id, 40, 40);
 }

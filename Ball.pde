@@ -1,12 +1,47 @@
-class Ball extends GameObject{
-  public Ball(float x,float y){
-    super(x,y,20,20);
+final class Ball extends GameObject {
+  static final float speed=5f;
+
+  //速度ベクトル
+  PVector velocityVec = PVector.random2D().setMag(speed);
+
+  ParticleSystem ps;
+  // Effectの方向ベクトル
+  // 正規化した速度の逆向き
+  PVector getEffectVec(){
+    return new PVector().set(velocityVec).normalize().mult(-0.1);
+  } 
+  
+  Ball(Scene scene, float x, float y) {
+    super(scene, x, y, 20, 20);
   }
-  
-  
-  public void draw(){
-    fill(0);
-    noStroke(); 
-    ellipse(x,y,width,height);
+
+
+  void setup() {
+    PImage img = loadImage("texture.png");
+
+    //なんかエフェクトがつくやつ
+    ps = new ParticleSystem(0, new PVector(width/2, height-60), img);
+  }
+
+  void draw() {
+    fill(255);
+    noStroke();
+
+    //座標更新
+    if ((x < 0 && velocityVec.x < 0) || (x > positionManager.width && velocityVec.x > 0)) {
+      velocityVec.x*=-1;
+    }
+    if ((y < 0 && velocityVec.y < 0) || (y > positionManager.height && velocityVec.y > 0)) {
+      velocityVec.y*=-1;
+    }
+
+    x+=velocityVec.x;
+    y+=velocityVec.y;
+    ps.origin.set(x, y);
+    ps.applyForce(getEffectVec());
+    ps.run();
+    ps.addParticle();
+
+    ellipse(x, y, width, height);
   }
 }

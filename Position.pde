@@ -12,14 +12,14 @@ enum Anchor {
   }
 }
 
-public class Position {
+class Position {
   int x;
   int y;
   int width;
   int height;
 }
 
-public static class PositionManager {
+static class PositionManager {
   private int width;
   private int height;
   private PApplet app;
@@ -30,6 +30,12 @@ public static class PositionManager {
     return height / 2;
   }
 
+  int getWidth() {
+    return width;
+  }
+  int getHeight() {
+    return height;
+  }
   private PositionManager(int width, int height, PApplet app) {
     this.width = width;
     this.height = height;
@@ -49,7 +55,7 @@ public static class PositionManager {
     instance = new PositionManager(width, height, app);
     return instance;
   }
-  static PositionManager getInstance(){
+  static PositionManager getInstance() {
     return instance;
   }
 
