@@ -36,7 +36,7 @@ static class PositionManager {
   int getHeight() {
     return height;
   }
-  private PositionManager(int width, int height, PApplet app) {
+  PositionManager(int width, int height, PApplet app) {
     this.width = width;
     this.height = height;
     this.app = app;
@@ -49,14 +49,6 @@ static class PositionManager {
 
   void applySize() {
     app.windowResize(width, height);
-  }
-  private static PositionManager instance;
-  static PositionManager getInstance(int width, int height, PApplet app) {
-    instance = new PositionManager(width, height, app);
-    return instance;
-  }
-  static PositionManager getInstance() {
-    return instance;
   }
 
   void posByAnchor(Position posFromAnchor, Anchor anchor) {

@@ -37,7 +37,7 @@ static abstract class Scene {
 
 //Sceneを管理する人
 final static class SceneManager {
-  private SceneManager() {
+  SceneManager() {
     var es=new EmptyScene();
     registerScenes(new Scene[]{es});
     activeScene=es;
@@ -69,12 +69,6 @@ final static class SceneManager {
     activeScene.destroy();
     activeScene = getSceneById(sceneId);
     activeScene.setup();
-  }
-
-  //シングルトン
-  private static SceneManager instance = new SceneManager();
-  static SceneManager getInstance() {
-    return instance;
   }
 }
 
