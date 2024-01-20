@@ -6,7 +6,15 @@ class Zone extends GameObject {
   
   
   void draw(){
-    
+    targets.forEach((target,listener)->{
+      if(target.isCollision(this)){
+        listener.onCollision();
+      }
+    });
+  }
+
+  void addTarget(GameObject target,CollisionListener listener){
+    targets.put(target,listener);
   }
 
 
