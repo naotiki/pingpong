@@ -2,9 +2,10 @@ import java.util.List;
 private final PositionManager positionManager = new PositionManager(800, 600, this);
 private final SceneManager sceneManager = new SceneManager();
 private final boolean isDebug = true;
+//各種イベントの伝播
 
 void setup() {
-  frameRate(60);
+  frameRate(30);
   positionManager.applySize();
   sceneManager.registerScenes(new Scene[]{new MainScene(), new TitleScene()});
   sceneManager.transition("main");
