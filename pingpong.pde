@@ -1,14 +1,9 @@
 import java.util.List;
-
-
-
-
-
 private final PositionManager positionManager = new PositionManager(800, 600, this);
 private final SceneManager sceneManager = new SceneManager();
 private final boolean isDebug = true;
-void setup() {
 
+void setup() {
   frameRate(60);
   positionManager.applySize();
   sceneManager.registerScenes(new Scene[]{new MainScene(), new TitleScene()});
