@@ -9,3 +9,14 @@ class GameServer{
     server=new Server(app, port); 
   }
 }
+
+class GameClient{
+  String ip;
+  int port;
+  private Client client;
+  GameClient(PApplet app,String ip,int port){
+    this.ip=ip;
+    this.port=port;
+    client=new Client(app, ip, port);
+  }
+}

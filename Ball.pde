@@ -1,5 +1,5 @@
 final class Ball extends GameObject {
-  static final float speed=5f;
+  static final float speed=50f;
 
   //速度ベクトル
   PVector velocityVec = PVector.random2D().setMag(speed);
