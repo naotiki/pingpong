@@ -20,6 +20,9 @@ final class KeyEventManager {
   boolean isPressedKeyCode(int keyCode)  {
     return keys.containsKey(keyCode);
   }
+  boolean isPressedKey(char key)  {
+    return keys.containsValue(key);
+  }
 
   void keyReleased() {
     //Release

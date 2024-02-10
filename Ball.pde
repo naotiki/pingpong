@@ -1,13 +1,13 @@
 final class Ball extends GameObject {
-  static final float speed=50f;
+  static final float speed=10f;
 
-  //速度ベクトル
+  //速度ベクトル Defaultではランダム
   PVector velocityVec = PVector.random2D().setMag(speed);
 
   ParticleSystem ps;
   // Effectの方向ベクトル
-  // 正規化した速度の逆向き
   PVector getEffectVec(){
+    // 正規化した速度の逆向き
     return new PVector().set(velocityVec).normalize().mult(-0.1);
   } 
   
@@ -26,8 +26,6 @@ final class Ball extends GameObject {
   void draw() {
     fill(255);
     noStroke();
-
-    //座標更新
     if ((x < 0 && velocityVec.x < 0) || (x > positionManager.width && velocityVec.x > 0)) {
       velocityVec.x*=-1;
     }

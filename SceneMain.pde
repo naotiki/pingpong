@@ -7,9 +7,6 @@ final class MainScene extends Scene {
     }
     
     void draw() {
-        if(keyEventManager.keys.size() > 0) {
-            println(keyEventManager.keys);
-        }
     
         if (player.isCollision(ball)) {
             if ((ball.x <= player.x + player.width && ball.velocityVec.x < 0) || (ball.x + ball.width >= player.x && ball.velocityVec.x>0)) {
@@ -24,6 +21,10 @@ final class MainScene extends Scene {
         if (player.y + player.height < positionManager.height && keyEventManager.isPressedKeyCode(DOWN)) {
             player.y += 10;
         }
+        if(keyEventManager.isPressedKey('b')){
+            var o = new Ball(this, random(500f), random(500f));
+            o.setup();
+        }
         
         
         
@@ -33,9 +34,5 @@ final class MainScene extends Scene {
     
     
     void keyPressed() {
-        if (key ==  'b') {
-            var o = new Ball(this, random(500f), random(500f));
-            o.setup();
-        }
     }
 }

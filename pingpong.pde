@@ -19,6 +19,7 @@ void draw() {
   if (isDebug) {
     drawSceneName();
   }
+  
   sceneManager.activeScene.draw();
 }
 
