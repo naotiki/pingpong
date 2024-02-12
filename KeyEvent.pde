@@ -17,10 +17,10 @@ final class KeyEventManager {
     keys.put(keyCode, key);//Press
   }
 
-  boolean isPressedKeyCode(int keyCode)  {
+  boolean isPressKeyCode(int keyCode)  {
     return keys.containsKey(keyCode);
   }
-  boolean isPressedKey(char key)  {
+  boolean isPressKey(char key)  {
     return keys.containsValue(key);
   }
 

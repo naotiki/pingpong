@@ -5,23 +5,43 @@ import java.util.stream.Collectors;
 static abstract class Scene {
   String id;
   List<GameObject> gameObjects = new ArrayList<GameObject>();
+  private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
+  private boolean isLockedGameObjects = false;
+  final void addGameObject(GameObject go) {
+    if(isLockedGameObjects) {
+      standbyGameObjects.add(go);
+    }else{
+      gameObjects.add(go);
+    }
+    
+  }
+
   Scene(String id) {
     this.id=id;
   }
 
   void setup(){
+    println("Start:main Setup");
+    isLockedGameObjects = true;
     gameObjects.forEach( (g) -> {
       g.setup();
     }
     );
+    isLockedGameObjects = false;
+    gameObjects.addAll(standbyGameObjects);
+    standbyGameObjects.clear();
+    println("End:main Setup");
   }
   
   void draw() {
+    isLockedGameObjects = true;
     gameObjects.forEach( (g) -> {
       g.draw();
     }
     );
-    
+    isLockedGameObjects = false;
+    gameObjects.addAll(standbyGameObjects);
+    standbyGameObjects.clear();
   }
   
   // Deprected. draw内で判定したほうがスムーズ

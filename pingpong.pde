@@ -1,15 +1,15 @@
 import java.util.List;
 
-final PositionManager positionManager = new PositionManager(800, 600, this);
+final ScreenManager screen = new ScreenManager(800, 600, this);
 final SceneManager sceneManager = new SceneManager();
-final KeyEventManager keyEventManager=new KeyEventManager();
+final KeyEventManager keyEventManager = new KeyEventManager();
 
 private final boolean isDebug = true;
-//各種イベントの伝播
 
+//各種イベントの伝播
 void setup() {
   frameRate(60);
-  positionManager.applySize();
+  screen.applySize();
   sceneManager.registerScenes(new Scene[]{new MainScene(), new TitleScene()});
   sceneManager.transition("main");
 }
@@ -19,12 +19,12 @@ void draw() {
   if (isDebug) {
     drawSceneName();
   }
-  
   sceneManager.activeScene.draw();
 }
 
 void keyPressed() {
   keyEventManager.keyPressed();
+  // TODO 消す ←たぶんわすれる
   sceneManager.activeScene.keyPressed();
 }
 void keyReleased() {

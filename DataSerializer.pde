@@ -1,6 +1,8 @@
 import java.nio.ByteBuffer;
 
-static class DataFormat{
+
+
+/* static class DataFormat{
     
     static class DataType{
         // Stringなど動的なデータサイズ
@@ -39,4 +41,4 @@ static class DataFormat{
     
 }
 
-
+ */

@@ -1,5 +1,5 @@
-// Processing公式から拝借...
-
+// Processingサンプル集から拝借...
+// Daniel Shiffman氏のExampleはPublic DomainなのでOK
 /**
  * Smoke Particle System
  * @author Daniel Shiffman.
@@ -7,9 +7,10 @@
  * A basic smoke effect using a particle system. Each particle
  * is rendered as an alpha masked image.
  * @see https://github.com/processing/processing-examples
+ * @see https://github.com/processing/processing-examples/tree/main/Topics/Simulate/SmokeParticleSystem
  * @see https://processing.org/examples/smokeparticlesystem.html
  */
- 
+
 // A simple Particle class, renders the particle as an image
 
 class Particle {

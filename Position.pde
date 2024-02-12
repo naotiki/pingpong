@@ -1,32 +1,84 @@
+//位置指定アンカー
 enum Anchor {
-  Default(-1, -1),
-    BottomLeft(1, -1),
-    BottomCenter(1, 0),
-    BottomRight(1, 1);
-  private int x;
-  private int y;
+  TopLeft(0, 0),
+  TopCenter(0.5, 0),
+  TopRight(1, 0),
+  MiddleLeft(0, 0.5),
+  MiddleCenter(0.5, 0.5),
+  MiddleRight(1, 0.5),
+  BottomLeft(0, 1),
+  BottomCenter(0.5, 1),
+  BottomRight(1, 1);
+  private float x;
+  private float y;
 
-  private Anchor(int x, int y) {
+  private Anchor(float x, float y) {
     this.x = x;
     this.y = y;
   }
 }
 
-class Position {
-  int x;
-  int y;
-  int width;
-  int height;
+static class Rect {
+  float x;
+  float y;
+  float w;
+  float h;
+  Rect(float x, float y){
+    this.x=x;
+    this.y=y;
+    this.w=0;
+    this.h=0;
+  }
+  Rect(float x, float y, float w, float h){
+    this.x=x;
+    this.y=y;
+    this.w=w;
+    this.h=h;
+  }
+  //Getter
+  public float left(){
+    return x;
+  }
+  public float right(){
+    return x + w;
+  }
+  public float top(){
+    return y;
+  }
+  public float bottom(){
+    return y + h;
+  }
+  public float centerX(){
+    return x + w/2;
+  }
+  public float centerY(){
+    return y + h/2;
+  }
+
+  void setPos(float x, float y){
+    this.x=x;
+    this.y=y;
+  }
+  void setSize(float w, float h){
+    this.w=w;
+    this.h=h;
+  }
+  // thisのanchorを基準としてrectの位置を返す
+  Rect posByAnchor(Rect rect, Anchor anchor) {
+    float tmpX = w * anchor.x - rect.w * anchor.x + rect.x + x;
+    float tmpY = h * anchor.y - rect.h * anchor.y + rect.y + y;
+    return new Rect(tmpX,tmpY,rect.w,rect.h);
+  }
 }
 
-static class PositionManager {
+static class ScreenManager {
   private int width;
   private int height;
   private PApplet app;
-  int getCenterX() {
+  int centerX() {
     return width / 2;
   }
-  int getCenterY() {
+  int centerY() {
     return height / 2;
   }
 
@@ -36,7 +88,7 @@ static class PositionManager {
   int getHeight() {
     return height;
   }
-  PositionManager(int width, int height, PApplet app) {
+  ScreenManager(int width, int height, PApplet app) {
     this.width = width;
     this.height = height;
     this.app = app;
@@ -51,6 +103,9 @@ static class PositionManager {
     app.windowResize(width, height);
   }
 
-  void posByAnchor(Position posFromAnchor, Anchor anchor) {
+  Rect posByAnchor(Rect rect, Anchor anchor) {
+    float x = width * anchor.x - rect.w * anchor.x + rect.x;
+    float y = height * anchor.y - rect.h * anchor.y + rect.y;
+    return new Rect(x,y,rect.w,rect.h);
   }
 }
