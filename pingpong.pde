@@ -1,7 +1,8 @@
 import java.util.List;
-
+import java.lang.*;
+import java.lang.reflect.*;
 final ScreenManager screen = new ScreenManager(800, 600, this);
-final SceneManager sceneManager = new SceneManager();
+final SceneManager sceneManager = new SceneManager(this);
 final KeyEventManager keyEventManager = new KeyEventManager();
 
 private final boolean isDebug = true;
@@ -10,8 +11,10 @@ private final boolean isDebug = true;
 void setup() {
   frameRate(60);
   screen.applySize();
-  sceneManager.registerScenes(new Scene[]{new MainScene(), new TitleScene()});
+  sceneManager.registerScenes(new Class[]{MainScene.class, TitleScene.class});
+  
   sceneManager.transition("main");
+  //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
 }
 
 void draw() {

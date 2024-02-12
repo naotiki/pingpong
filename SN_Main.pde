@@ -11,7 +11,7 @@ final class MainScene extends Scene {
 
 
 
-    MainScene() {
+    public MainScene() {
         super("main");
     }
     void draw() {

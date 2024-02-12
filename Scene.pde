@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 static abstract class Scene {
-  String id;
+  public String id;
   List<GameObject> gameObjects = new ArrayList<GameObject>();
   private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
   private boolean isLockedGameObjects = false;
@@ -57,12 +57,14 @@ static abstract class Scene {
 
 //Sceneを管理する人
 final static class SceneManager {
-  SceneManager() {
-    var es=new EmptyScene();
-    registerScenes(new Scene[]{es});
+  pingpong app;
+  SceneManager(pingpong app) {
+    this.app = app;
+    EmptyScene es=new EmptyScene();
+    registerScenes(new Class[]{});
     activeScene=es;
   }
-  private Map<String, Scene> allScenes = new HashMap<>();
+  private Map<String, Class<Scene>> allScenes = new HashMap<>();
 
   private Scene activeScene;
   // ゲッター
@@ -70,30 +72,43 @@ final static class SceneManager {
     return activeScene;
   }
   
-  Scene getSceneById(String id) {
+  Class<Scene> getSceneById(String id) {
     return allScenes.get(id);
   }
 
-  void registerScenes(Scene[] scenes) {
-    allScenes.putAll(
+  void registerScenes(Class<Scene>[] scenes) {
+  
+      allScenes.putAll(
       Arrays.asList(scenes)
       .stream()
       .collect(
-      Collectors.toMap(s->s.id, s->s)
+      Collectors.toMap((s)->{
+        return getNewSceneInstance(s).id;
+      }, s->s)
       )
       );
+    
   }
-
+  
   void transition(String sceneId) {
     println("Loading "+sceneId);
     activeScene.destroy();
-    activeScene = getSceneById(sceneId);
+    activeScene = getNewSceneInstance(getSceneById(sceneId));
     activeScene.setup();
+  }
+  private Scene getNewSceneInstance(Class<Scene> clazz) {
+    Scene scene = null;
+    try{
+      scene = clazz.getDeclaredConstructor(app.getClass()).newInstance(app);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+    return scene;
   }
 }
 
 
-final static class EmptyScene extends Scene {
+static final class EmptyScene extends Scene {
   EmptyScene(){
     super("_empty");
   }

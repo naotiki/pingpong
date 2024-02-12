@@ -5,7 +5,7 @@ final class Button extends GameObject {
   Text tmp;
   Button(Scene scene, Rect rect,String text) {
     super(scene, rect);
-    tmp = new Text(scene, rect.posByAnchor(new Rect(0,0,rect.w,rect.h),Anchor.TopLeft), text);
+    tmp = new Text(scene, rect.posByAnchor(new Rect(0,0,rect.w,rect.h),Anchor.MiddleCenter), text);
   }
   void setup(){
   }
@@ -36,14 +36,21 @@ final class Button extends GameObject {
   }
 }
 final class Text extends GameObject {
+  private static final int TEXTSIZE_DEFAULT = 32;
   String text;
+  int textSize=TEXTSIZE_DEFAULT;
   Text(Scene scene, Rect rect, String text) {
+    this(scene, rect,text,TEXTSIZE_DEFAULT);
+  }
+  Text(Scene scene, Rect rect, String text,int textSize) {
     super(scene, rect);
     this.text = text;
+    this.textSize = textSize;
   }
   void draw(){
     textAlign(CENTER, CENTER);
     fill(0);
+    textSize(textSize);
     text(text, rect.x, rect.y,rect.w,rect.h);
   }
 }
