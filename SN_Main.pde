@@ -12,6 +12,12 @@ final class MainScene extends Scene {
 
     public MainScene() {
     }
+    void setup(){
+        super.setup();
+        button.setOnClickListener(()->{
+            println("Button Clicked");
+        });
+    }
     void draw() {
         Rect ballRect= ball.rect;
         Rect playerRect = player.rect;

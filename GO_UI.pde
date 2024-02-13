@@ -1,11 +1,18 @@
 final class Button extends GameObject {
+  
   static final int COLOR_DEFAULT =0xff;
-  static final int COLOR_HOVER =0xee;
-  static final int COLOR_PRESS =0xbb;
-  Text tmp;
-  Button(Scene scene, Rect rect,String text) {
+  static final int COLOR_HOVER = 0xee;
+  static final int COLOR_PRESS = 0xbb;
+
+  private Text tmp;
+  private OnClickListner listener;
+  Button(Scene scene, Rect rect,String text,OnClickListner listener) {
     super(scene, rect);
     tmp = new Text(scene, rect.posByAnchor(new Rect(0,0,rect.w,rect.h),Anchor.MiddleCenter), text);
+    this.listener = listener;
+  }
+  Button(Scene scene, Rect rect,String text) {
+    this(scene, rect,text,null);
   }
   void setup(){
   }
@@ -13,7 +20,7 @@ final class Button extends GameObject {
   void draw(){
     if (mousePressed) {
       if(!mousePressing&&isMouseOver()){
-        println("Button Clicked");
+        if(listener!=null) listener.onClicked();
         mousePressing = true;
       }
     }else {
@@ -34,11 +41,14 @@ final class Button extends GameObject {
   boolean isMouseOver()  {
     return mouseX >= rect.x && mouseX <= rect.x+rect.w && mouseY >= rect.y && mouseY <= rect.y+rect.h;
   }
+  void setOnClickListener(OnClickListner listener){
+    this.listener = listener;
+  }
 }
 final class Text extends GameObject {
   private static final int TEXTSIZE_DEFAULT = 32;
   String text;
-  int textSize=TEXTSIZE_DEFAULT;
+  int textSize = TEXTSIZE_DEFAULT;
   Text(Scene scene, Rect rect, String text) {
     this(scene, rect,text,TEXTSIZE_DEFAULT);
   }
@@ -53,4 +63,7 @@ final class Text extends GameObject {
     textSize(textSize);
     text(text, rect.x, rect.y,rect.w,rect.h);
   }
+}
+interface OnClickListner{
+  void onClicked();
 }
