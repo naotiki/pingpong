@@ -21,16 +21,16 @@ final class Ball extends GameObject {
     PImage img = loadImage("ball_effect.png");
 
     //なんかエフェクトがつくやつ
-    ps = new ParticleSystem(0, new PVector(width/2, height-60), img);
+    ps = new ParticleSystem(0, new PVector(width/2, height-60), img,#ff0000);
   }
 
   void draw() {
     fill(255);
     noStroke();
-    if ((rect.x < 0 && velocityVec.x < 0) || (rect.x > screen.width && velocityVec.x > 0)) {
+    if ((rect.x < 0 && velocityVec.x < 0) || (rect.x+rect.w > screen.width && velocityVec.x > 0)) {
       velocityVec.x*=-1;
     }
-    if ((rect.y < 0 && velocityVec.y < 0) || (rect.y > screen.height && velocityVec.y > 0)) {
+    if ((rect.y < 0 && velocityVec.y < 0) || (rect.y+rect.h > screen.height && velocityVec.y > 0)) {
       velocityVec.y*=-1;
     }
 

@@ -19,8 +19,8 @@ class Particle {
   PVector acc;
   float lifespan;
   PImage img;
-
-  Particle(PVector l, PImage img_) {
+  color tintColor;
+  Particle(PVector l, PImage img_, color tintColor_) {
     acc = new PVector(0, 0);
     float vx = randomGaussian()*0.3;
     float vy = randomGaussian()*0.3 - 1.0;
@@ -28,6 +28,7 @@ class Particle {
     loc = l.copy();
     lifespan = 100.0;
     img = img_;
+    tintColor = tintColor_;
   }
 
   void run() {
@@ -52,7 +53,7 @@ class Particle {
   // Method to display
   void render() {
     imageMode(CENTER);
-    tint(255, lifespan);
+    tint(tintColor, lifespan);
     image(img, loc.x, loc.y);
     // Drawing a circle instead
     // fill(255,lifespan);
@@ -78,13 +79,17 @@ class ParticleSystem {
   ArrayList<Particle> particles;    // An arraylist for all the particles
   PVector origin;                   // An origin point for where particles are birthed
   PImage img;
-
-  ParticleSystem(int num, PVector v, PImage img_) {
+  color tintColor;
+  ParticleSystem(int num, PVector v,PImage img){
+    this(num,v,img,#ffffff);
+  }
+  ParticleSystem(int num, PVector v, PImage img_,color tintColor_) {
     particles = new ArrayList<Particle>();              // Initialize the arraylist
     origin = v.copy();                                   // Store the origin point
     img = img_;
+    tintColor = tintColor_;
     for (int i = 0; i < num; i++) {
-      particles.add(new Particle(origin, img));         // Add "num" amount of particles to the arraylist
+      particles.add(new Particle(origin, img,tintColor));         // Add "num" amount of particles to the arraylist
     }
   }
 
@@ -107,6 +112,6 @@ class ParticleSystem {
   }  
 
   void addParticle() {
-    particles.add(new Particle(origin, img));
+    particles.add(new Particle(origin, img,tintColor));
   }
 }

@@ -1,6 +1,6 @@
 final class Button extends GameObject {
   
-  static final int COLOR_DEFAULT =0xff;
+  static final int TEXTCOLOR_DEFAULT =0xff;
   static final int COLOR_HOVER = 0xee;
   static final int COLOR_PRESS = 0xbb;
 
@@ -20,10 +20,12 @@ final class Button extends GameObject {
   void draw(){
     if (mousePressed) {
       if(!mousePressing&&isMouseOver()){
-        if(listener!=null) listener.onClicked();
         mousePressing = true;
       }
     }else {
+      if(mousePressing){
+        if(listener!=null) listener.onClicked();
+      }
       mousePressing = false;
     }
     rectMode(CORNER);
@@ -33,7 +35,7 @@ final class Button extends GameObject {
     }else if(isMouseOver()) {
       fill(COLOR_HOVER);
     } else {
-      fill(COLOR_DEFAULT);
+      fill(TEXTCOLOR_DEFAULT);
     }
     rect(rect.x,rect.y,rect.w,rect.h,12); 
   }
@@ -45,25 +47,34 @@ final class Button extends GameObject {
     this.listener = listener;
   }
 }
+
 final class Text extends GameObject {
   private static final int TEXTSIZE_DEFAULT = 32;
+  private static final color TEXTCOLOR_DEFAULT = #000000;
   String text;
   int textSize = TEXTSIZE_DEFAULT;
+  color textColor = TEXTCOLOR_DEFAULT;
   Text(Scene scene, Rect rect, String text) {
-    this(scene, rect,text,TEXTSIZE_DEFAULT);
+    this(scene, rect,text,TEXTSIZE_DEFAULT,TEXTCOLOR_DEFAULT);
   }
-  Text(Scene scene, Rect rect, String text,int textSize) {
+  Text(Scene scene, Rect rect, String text,int textSize,color textColor) {
     super(scene, rect);
     this.text = text;
     this.textSize = textSize;
+    this.textColor = textColor;
   }
   void draw(){
     textAlign(CENTER, CENTER);
-    fill(0);
+    fill(textColor);
     textSize(textSize);
-    text(text, rect.x, rect.y,rect.w,rect.h);
+    if(rect.w+rect.h==0){
+      text(text, rect.x, rect.y);
+    }else{
+      text(text, rect.x, rect.y,rect.w,rect.h);
+    }
   }
 }
+
 interface OnClickListner{
   void onClicked();
 }
