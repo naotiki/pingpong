@@ -1,34 +1,33 @@
 final class MainScene extends Scene {
 
-    color playerColor = #ff1111;
-    color player2Color = #1111ff;
+    color playerColor = #ff5555;
+    color player2Color = #5555ff;
 
-    Area uiArea = new Area(this, new Rect(0,0,screen.getWidth(),100),#ffffff);
+    
     Area gameArea = new Area(this, new Rect(0,100,screen.getWidth(),screen.getHeight()-100),#000000);
 
     Paddle player = new Paddle(this, gameArea.posByAnchor(PaddleSize.pos(50,0),Anchor.MiddleLeft),playerColor);
     Paddle player2 = new Paddle(this, gameArea.posByAnchor(PaddleSize.pos(-50,0),Anchor.MiddleRight),player2Color);
-    Ball ball = new Ball(this, BallSize.pos(gameArea.centerX(), gameArea.centerY()));
+    Ball ball = new Ball(this, BallSize.pos(gameArea.centerX(), gameArea.centerY()),gameArea);
 
 
-
-    Button button = new Button(this, uiArea.posByAnchor(new Rect(0,50,100,50),Anchor.TopCenter),"Start");
+    Area uiArea = new Area(this, new Rect(0,0,screen.getWidth(),100),#dddddd);
+    Button button = new Button(this, uiArea.posByAnchor(new Rect(0,25,100,50),Anchor.TopCenter),"Start");
     int score1=0;
     int score2=0;
     Text score1Text = new Text(this, uiArea.posByAnchor(new Rect(-150,50),Anchor.TopCenter),"0",40,playerColor);
     Text score2Text = new Text(this, uiArea.posByAnchor(new Rect(150,50),Anchor.TopCenter),"0",40,player2Color);
 
-
+    Area overRayArea = new Area(this, new Rect(0,0,screen.getWidth(),screen.getHeight()),#dd000000);
 
     public MainScene() {
     }
-    void setup(){
-        super.setup();
+    void sceneSetup(){
         button.setOnClickListener(()->{
             sceneManager.changeOneshot(new MainScene());
         });
     }
-    void update() {
+    void sceneUpdate() {
         Rect ballRect= ball.rect;
         Rect playerRect = player.rect;
         Rect player2Rect = player2.rect;
@@ -49,6 +48,18 @@ final class MainScene extends Scene {
             ball.velocityVec.x *=-1;
         }
         
+        if(ballRect.right() > gameArea.rect.right()){
+            score1++;
+            score1Text.text=str(score1);
+            ball.reset();
+        }
+        
+        if(ballRect.left() < gameArea.rect.left()){
+            score2++;
+            score2Text.text=str(score2);
+            ball.reset();
+        }
+        
         if (keyEventManager.isPressKey('w')) {
             player.up(gameArea);
         } 
@@ -63,9 +74,6 @@ final class MainScene extends Scene {
         }
         
         //autoMan(gameArea,player2,ball);
-        
-        super.update();
-        text("px:" + player.rect.x + " py:" + player.rect.y,40,450);
     }
     
     void keyPressed() {

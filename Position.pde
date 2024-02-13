@@ -77,6 +77,9 @@ static class Rect {
     float tmpY = h * anchor.y - rect.h * anchor.y + rect.y + y;
     return new Rect(tmpX,tmpY,rect.w,rect.h);
   }
+  boolean isPointWithIn(float x, float y){
+    return x >= left() && x <= right() && y >= top() && y <= bottom();
+  }
 }
 
 static class ScreenManager {

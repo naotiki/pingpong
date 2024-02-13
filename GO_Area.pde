@@ -1,4 +1,4 @@
-final class Area extends GameObject {
+final class Area extends Pointerble {
     color bgColor;
     Area(Scene scene,Rect rect,color bgColor){
         super(scene,rect);

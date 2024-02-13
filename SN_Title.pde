@@ -1,13 +1,5 @@
-static final class TitleScene extends Scene {
+final class TitleScene extends Scene {
   TitleScene() {
   }
   
-  void update(){
-    
-  }
-
-
-  void keyPressed() {
-    
-  }
 }

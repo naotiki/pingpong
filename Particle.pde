@@ -83,16 +83,20 @@ class ParticleSystem {
   ParticleSystem(int num, PVector v,PImage img){
     this(num,v,img,#ffffff);
   }
+  int initNum;
   ParticleSystem(int num, PVector v, PImage img_,color tintColor_) {
     particles = new ArrayList<Particle>();              // Initialize the arraylist
     origin = v.copy();                                   // Store the origin point
     img = img_;
     tintColor = tintColor_;
-    for (int i = 0; i < num; i++) {
+    initNum = num;
+    init();
+  }
+  void init(){
+    for (int i = 0; i < initNum; i++) {
       particles.add(new Particle(origin, img,tintColor));         // Add "num" amount of particles to the arraylist
     }
   }
-
   void run() {
     for (int i = particles.size()-1; i >= 0; i--) {
       Particle p = particles.get(i);

@@ -1,6 +1,9 @@
 import java.util.List;
 import java.lang.*;
 import java.lang.reflect.*;
+final int FRAME_RATE = 30;
+final float UNIT = 60f/FRAME_RATE;
+
 final ScreenManager screen = new ScreenManager(1000, 700, this);
 final SceneManager sceneManager = new SceneManager();
 final KeyEventManager keyEventManager = new KeyEventManager();
@@ -9,7 +12,7 @@ private final boolean isDebug = true;
 
 //各種イベントの伝播
 void setup() {
-  frameRate(60);
+  frameRate(FRAME_RATE);
   screen.applySize();
   sceneManager.registerScenes(new HashMap<String, Scene>() {
     {

@@ -1,9 +1,14 @@
 final class Ball extends GameObject {
-  static final float speed=10f;
-  
+  private float speed=10f*UNIT;
+  static final color DEFAULT_TINTCOLOR = #ffffff;
 
   //速度ベクトル Defaultではランダム
-  PVector velocityVec = PVector.random2D().setMag(speed);
+  PVector velocityVec = randomAngleVec().setMag(speed);
+
+  PVector randomAngleVec(){
+    float radian = random(-radians(60),radians(60) )+round(random(1))*PI;
+    return PVector.fromAngle(radian);
+  }
 
   ParticleSystem ps;
   void setParticleColor(color c){
@@ -15,9 +20,10 @@ final class Ball extends GameObject {
     // 正規化した速度の逆向き * -0.1
     return new PVector().set(velocityVec).normalize().mult(-0.1);
   } 
-  
-  Ball(Scene scene, Rect rect) {
+  Area area;
+  Ball(Scene scene, Rect rect,Area area) {
     super(scene, rect);
+    this.area = area;
   }
 
 
@@ -25,16 +31,17 @@ final class Ball extends GameObject {
     PImage img = loadImage("ball_effect.png");
 
     //なんかエフェクトがつくやつ
-    ps = new ParticleSystem(0, new PVector(width/2, height-60), img,#ffffff);
+    ps = new ParticleSystem(50, new PVector(rect.centerX(),rect.centerY()), img,DEFAULT_TINTCOLOR);
   }
 
   void draw() {
     fill(255);
     noStroke();
-    if ((rect.x < 0 && velocityVec.x < 0) || (rect.x+rect.w > screen.width && velocityVec.x > 0)) {
+    Rect areaRect = area.rect;
+    if ((rect.x < areaRect.x && velocityVec.x < 0) || (rect.x+rect.w > areaRect.x + areaRect.w && velocityVec.x > 0)) {
       velocityVec.x*=-1;
     }
-    if ((rect.y < 0 && velocityVec.y < 0) || (rect.y+rect.h > screen.height && velocityVec.y > 0)) {
+    if ((rect.y < areaRect.y && velocityVec.y < 0) || (rect.y+rect.h > areaRect.y + areaRect.h  && velocityVec.y > 0)) {
       velocityVec.y*=-1;
     }
 
@@ -46,5 +53,14 @@ final class Ball extends GameObject {
     ps.addParticle();
     ellipseMode(CORNER);
     ellipse(rect.x, rect.y, rect.w, rect.h);
+  }
+
+  void reset(){
+      ps.tintColor = DEFAULT_TINTCOLOR;
+      rect.x = screen.centerX();
+      rect.y = screen.centerY();
+      velocityVec = randomAngleVec().setMag(speed);
+      ps.origin.set(rect.centerX(), rect.centerY());
+      ps.init();
   }
 }

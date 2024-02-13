@@ -1,4 +1,4 @@
-final class Button extends GameObject {
+final class Button extends Clickable {
   
   static final int TEXTCOLOR_DEFAULT =0xff;
   static final int COLOR_HOVER = 0xee;
@@ -18,7 +18,7 @@ final class Button extends GameObject {
   }
   private boolean mousePressing = false;
   void draw(){
-    if (mousePressed) {
+    /* if (mousePressed) {
       if(!mousePressing&&isMouseOver()){
         mousePressing = true;
       }
@@ -27,7 +27,7 @@ final class Button extends GameObject {
         if(listener!=null) listener.onClicked();
       }
       mousePressing = false;
-    }
+    } */
     rectMode(CORNER);
     strokeWeight(1);
     if(mousePressing){
@@ -45,6 +45,9 @@ final class Button extends GameObject {
   }
   void setOnClickListener(OnClickListner listener){
     this.listener = listener;
+  }
+  void onClicked(){
+     if(listener!=null) listener.onClicked();
   }
 }
 

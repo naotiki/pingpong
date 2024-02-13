@@ -14,12 +14,12 @@ final class Paddle extends GameObject {
 
   void up(Area area){
     if(rect.y > area.rect.y){
-      rect.y -= 10;
+      rect.y -= 10*UNIT;
     }
   }
   void down(Area area){
-    if(rect.y + rect.h < area.rect.h+area.rect.y){
-      rect.y += 10;
+    if(rect.bottom() < area.rect.bottom()){
+      rect.y += 10*UNIT;
     }
   }
 }

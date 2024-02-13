@@ -1,8 +1,37 @@
 import java.util.Map;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
-static abstract class Scene {
+ abstract class Scene {
+  final class MouseEventManager{
+    List<Pointerble> gameObjects = new ArrayList<Pointerble>();
+    MouseEventManager(){
+      
+    }
+    
+    Pointerble clickingGameObject=null;
+    void update(){
+      if (mousePressed&&clickingGameObject==null) {
+        gameObjects.stream()
+          .filter(g->g.enabled && g.rect.isPointWithIn(mouseX,mouseY) )
+          .findFirst()
+          .ifPresent(g->{
+            clickingGameObject=g;
+            println("clickingGameObject:"+g.getClass().getSimpleName());
+          });
+      }else if(!mousePressed&&clickingGameObject!=null){
+        if(clickingGameObject instanceof Clickable){
+          ((Clickable)clickingGameObject).onClicked();
+        }
+        clickingGameObject=null;
+      }
+    }
+  }
+  private MouseEventManager mouseEventManager = new MouseEventManager();
+  void putPointerble(Pointerble p){
+    mouseEventManager.gameObjects.add(0,p);
+  }
   List<GameObject> gameObjects = new ArrayList<GameObject>();
   private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
   private boolean isLockedGameObjects = false;
@@ -14,9 +43,14 @@ static abstract class Scene {
     }
     
   }
+  void sceneSetup() {
+  }
+  void sceneUpdate(){
 
-  void setup(){
+  }
+  final void setup(){
     println("Start:main Setup");
+    sceneSetup();
     isLockedGameObjects = true;
     gameObjects.forEach( (g) -> {
       g.setup();
@@ -27,9 +61,15 @@ static abstract class Scene {
     standbyGameObjects.clear();
     println("End:main Setup");
   }
-  
-  void update() {
+  final void update() {
+
+
+
+    sceneUpdate();
     isLockedGameObjects = true;
+    
+    mouseEventManager.update();
+
     gameObjects.forEach( (g) -> {
       g.draw();
     }
@@ -50,7 +90,7 @@ static abstract class Scene {
 
 
 //Sceneを管理する人
-final static class SceneManager {
+final  class SceneManager {
   SceneManager() {
     EmptyScene es=new EmptyScene();
     registerScene("_empty",es);
@@ -104,5 +144,5 @@ final static class SceneManager {
 }
 
 
-static final class EmptyScene extends Scene {
+ final class EmptyScene extends Scene {
 }

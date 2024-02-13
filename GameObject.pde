@@ -2,7 +2,7 @@
 abstract class GameObject {
   //値はすべて絶対値 左上(0,0)
   Rect rect;
-
+  boolean enabled = true;
   
   public Scene getActiveScene() {
     return sceneManager.activeScene;
@@ -21,7 +21,8 @@ abstract class GameObject {
 
   // 描画は各自で実装
   abstract void draw();
-
+  
+  // 更新は各自で実装
    // 衝突判定 // これいる？
   /* boolean isCollision(GameObject target) {
     return (x < target.x + target.width && x + width > target.x) && (y < target.y + target.height && y + height > target.y) ;
@@ -41,3 +42,15 @@ abstract class RigitBody extends GameObject {
   
 }
  */
+  abstract class Pointerble extends GameObject{
+    Pointerble(Scene scene,Rect rect) {
+      super(scene,rect);
+      scene.putPointerble(this);
+    }
+  }
+  abstract class Clickable extends Pointerble  {
+    Clickable(Scene scene,Rect rect) {
+      super(scene,rect);
+    }
+    abstract void onClicked();
+ }
