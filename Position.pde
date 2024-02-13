@@ -55,6 +55,14 @@ static class Rect {
     return y + h/2;
   }
 
+  //コピーして位置を変更
+  Rect pos(float x, float y){
+    return new Rect(x,y,w,h);
+  }
+  //コピーしてサイズを変更
+  Rect size(float w, float h){
+    return new Rect(x,y,w,h);
+  }
   void setPos(float x, float y){
     this.x=x;
     this.y=y;
@@ -65,7 +73,7 @@ static class Rect {
   }
   // thisのanchorを基準としてrectの位置を返す
   Rect posByAnchor(Rect rect, Anchor anchor) {
-    float tmpX = w * anchor.x - rect.w * anchor.x + rect.x + x;
+    float tmpX = w * anchor.x  - rect.w * anchor.x + rect.x + x;
     float tmpY = h * anchor.y - rect.h * anchor.y + rect.y + y;
     return new Rect(tmpX,tmpY,rect.w,rect.h);
   }

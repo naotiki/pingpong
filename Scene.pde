@@ -28,7 +28,7 @@ static abstract class Scene {
     println("End:main Setup");
   }
   
-  void draw() {
+  void update() {
     isLockedGameObjects = true;
     gameObjects.forEach( (g) -> {
       g.draw();
@@ -39,9 +39,9 @@ static abstract class Scene {
     standbyGameObjects.clear();
   }
   
-  // Deprected. draw内で判定したほうがスムーズ
+  // Deprected, Use "KeyEventManager"
   void keyPressed(){}
-  //Sceneを離れるとき
+  // Sceneを離れるとき すべてを破壊してきれいにする
   void destroy() {
   };
 }

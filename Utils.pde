@@ -1,10 +1,10 @@
 //Demo用？
-void autoMan(Paddle player,Ball ball){
+void autoMan(Area area,Paddle player,Ball ball){
     Rect playerRect=player.rect;
     Rect ballRect=ball.rect;
     if(ballRect.centerY()<playerRect.centerY()){
-        player.up();
+        player.up(area);
     }else if(ballRect.centerY()>playerRect.centerY()){
-        player.down();
+        player.down(area);
     }
 }

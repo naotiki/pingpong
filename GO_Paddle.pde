@@ -2,7 +2,6 @@ final class Paddle extends GameObject {
   color fillColor;
   Paddle(Scene scene, Rect rect,color fillColor) {
     super(scene, rect);
-    rect.setSize(10,200);
     this.fillColor = fillColor;
   }
 
@@ -13,13 +12,13 @@ final class Paddle extends GameObject {
     rect(rect.x, rect.y, rect.w, rect.h);
   }
 
-  void up(){
-    if(rect.y > 0){
+  void up(Area area){
+    if(rect.y > area.rect.y){
       rect.y -= 10;
     }
   }
-  void down(){
-    if(rect.y + rect.h < screen.height){
+  void down(Area area){
+    if(rect.y + rect.h < area.rect.h+area.rect.y){
       rect.y += 10;
     }
   }

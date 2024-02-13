@@ -1,7 +1,7 @@
 import java.util.List;
 import java.lang.*;
 import java.lang.reflect.*;
-final ScreenManager screen = new ScreenManager(800, 600, this);
+final ScreenManager screen = new ScreenManager(1000, 700, this);
 final SceneManager sceneManager = new SceneManager();
 final KeyEventManager keyEventManager = new KeyEventManager();
 
@@ -26,7 +26,7 @@ void draw() {
   if (isDebug) {
     drawSceneName();
   }
-  sceneManager.activeScene.draw();
+  sceneManager.activeScene.update();
 }
 
 void keyPressed() {

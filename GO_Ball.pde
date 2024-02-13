@@ -1,10 +1,15 @@
 final class Ball extends GameObject {
   static final float speed=10f;
+  
 
   //速度ベクトル Defaultではランダム
   PVector velocityVec = PVector.random2D().setMag(speed);
 
   ParticleSystem ps;
+  void setParticleColor(color c){
+    ps.tintColor = c;
+  }
+
   // Effectの方向ベクトル
   PVector getEffectVec(){
     // 正規化した速度の逆向き * -0.1
@@ -13,7 +18,6 @@ final class Ball extends GameObject {
   
   Ball(Scene scene, Rect rect) {
     super(scene, rect);
-    rect.setSize(20, 20);
   }
 
 
@@ -21,7 +25,7 @@ final class Ball extends GameObject {
     PImage img = loadImage("ball_effect.png");
 
     //なんかエフェクトがつくやつ
-    ps = new ParticleSystem(0, new PVector(width/2, height-60), img,#ff0000);
+    ps = new ParticleSystem(0, new PVector(width/2, height-60), img,#ffffff);
   }
 
   void draw() {

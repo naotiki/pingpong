@@ -67,7 +67,7 @@ final class Text extends GameObject {
     textAlign(CENTER, CENTER);
     fill(textColor);
     textSize(textSize);
-    if(rect.w+rect.h==0){
+    if(rect.w==0&&rect.h==0){
       text(text, rect.x, rect.y);
     }else{
       text(text, rect.x, rect.y,rect.w,rect.h);
