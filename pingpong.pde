@@ -13,12 +13,11 @@ void setup() {
   screen.applySize();
   sceneManager.registerScenes(new HashMap<String, Scene>() {
     {
-        //put("main", new MainScene());
         put("title", new TitleScene());
     }
   });
-  sceneManager.transitionOneshot(new MainScene());
-  //sceneManager.transition("main");
+  sceneManager.changeOneshot(new MainScene());
+  //sceneManager.change("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
 }
 

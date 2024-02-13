@@ -21,7 +21,7 @@ final class MainScene extends Scene {
     void setup(){
         super.setup();
         button.setOnClickListener(()->{
-            sceneManager.transitionOneshot(new MainScene());
+            sceneManager.changeOneshot(new MainScene());
         });
     }
     void draw() {

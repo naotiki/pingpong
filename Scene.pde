@@ -85,21 +85,21 @@ final static class SceneManager {
     allScenes.putAll(scenes);
   }
 
-  private void transition(String sceneId,Scene scene){
+  private void change(String sceneId,Scene scene){
     activeScene.destroy();
     activeScene = scene;
     activeScene.setup();
     activeSceneId = sceneId;
   }
   
-  void transition(String sceneId) {
+  void change(String sceneId) {
     println("Loading "+sceneId);
-    transition(sceneId,getSceneById(sceneId));
+    change(sceneId,getSceneById(sceneId));
   }
-  void transitionOneshot(Scene scene) {
+  void changeOneshot(Scene scene) {
     var id = "__"+scene.getClass().getSimpleName();
     println("Oneshot Loading "+id);
-    transition(id,scene);
+    change(id,scene);
   }
 }
 
