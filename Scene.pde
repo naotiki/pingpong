@@ -3,7 +3,6 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 static abstract class Scene {
-  public String id;
   List<GameObject> gameObjects = new ArrayList<GameObject>();
   private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
   private boolean isLockedGameObjects = false;
@@ -14,10 +13,6 @@ static abstract class Scene {
       gameObjects.add(go);
     }
     
-  }
-
-  Scene(String id) {
-    this.id=id;
   }
 
   void setup(){
@@ -46,7 +41,6 @@ static abstract class Scene {
   
   // Deprected. draw内で判定したほうがスムーズ
   void keyPressed(){}
-
   //Sceneを離れるとき
   void destroy() {
   };
@@ -57,59 +51,58 @@ static abstract class Scene {
 
 //Sceneを管理する人
 final static class SceneManager {
-  pingpong app;
-  SceneManager(pingpong app) {
-    this.app = app;
+  SceneManager() {
     EmptyScene es=new EmptyScene();
-    registerScenes(new Class[]{});
+    registerScene("_empty",es);
     activeScene=es;
   }
-  private Map<String, Class<Scene>> allScenes = new HashMap<>();
+  private Map<String, Scene> allScenes = new HashMap<>();
 
   private Scene activeScene;
+  private String activeSceneId;
   // ゲッター
   Scene getActiveScene() {
     return activeScene;
   }
-  
-  Class<Scene> getSceneById(String id) {
+  String getActiveSceneId() {
+    return activeSceneId;
+  }
+  String getIdFromScene(Scene scene){
+    for(Map.Entry<String, Scene> entry : allScenes.entrySet()){
+      if(entry.getValue().equals(scene)){
+        return entry.getKey();
+      }
+    }
+    return "_null";
+  }
+  Scene getSceneById(String id) {
     return allScenes.get(id);
   }
+  void registerScene(String id,Scene instance){
+    allScenes.put(id,instance);
+  }
+  void registerScenes(Map<String, Scene> scenes) {
+    allScenes.putAll(scenes);
+  }
 
-  void registerScenes(Class<Scene>[] scenes) {
-  
-      allScenes.putAll(
-      Arrays.asList(scenes)
-      .stream()
-      .collect(
-      Collectors.toMap((s)->{
-        return getNewSceneInstance(s).id;
-      }, s->s)
-      )
-      );
-    
+  private void transition(String sceneId,Scene scene){
+    activeScene.destroy();
+    activeScene = scene;
+    activeScene.setup();
+    activeSceneId = sceneId;
   }
   
   void transition(String sceneId) {
     println("Loading "+sceneId);
-    activeScene.destroy();
-    activeScene = getNewSceneInstance(getSceneById(sceneId));
-    activeScene.setup();
+    transition(sceneId,getSceneById(sceneId));
   }
-  private Scene getNewSceneInstance(Class<Scene> clazz) {
-    Scene scene = null;
-    try{
-      scene = clazz.getDeclaredConstructor(app.getClass()).newInstance(app);
-    }catch(Exception e){
-      e.printStackTrace();
-    }
-    return scene;
+  void transitionOneshot(Scene scene) {
+    var id = "__"+scene.getClass().getSimpleName();
+    println("Oneshot Loading "+id);
+    transition(id,scene);
   }
 }
 
 
 static final class EmptyScene extends Scene {
-  EmptyScene(){
-    super("_empty");
-  }
 }

@@ -10,9 +10,7 @@ final class MainScene extends Scene {
 
 
 
-
     public MainScene() {
-        super("main");
     }
     void draw() {
         Rect ballRect= ball.rect;

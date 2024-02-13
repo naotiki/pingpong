@@ -1,6 +1,5 @@
-final class TitleScene extends Scene {
+static final class TitleScene extends Scene {
   TitleScene() {
-    super("title");
   }
   
   void draw(){

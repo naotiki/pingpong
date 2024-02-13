@@ -2,7 +2,7 @@ import java.util.List;
 import java.lang.*;
 import java.lang.reflect.*;
 final ScreenManager screen = new ScreenManager(800, 600, this);
-final SceneManager sceneManager = new SceneManager(this);
+final SceneManager sceneManager = new SceneManager();
 final KeyEventManager keyEventManager = new KeyEventManager();
 
 private final boolean isDebug = true;
@@ -11,9 +11,14 @@ private final boolean isDebug = true;
 void setup() {
   frameRate(60);
   screen.applySize();
-  sceneManager.registerScenes(new Class[]{MainScene.class, TitleScene.class});
-  
-  sceneManager.transition("main");
+  sceneManager.registerScenes(new HashMap<String, Scene>() {
+    {
+        //put("main", new MainScene());
+        put("title", new TitleScene());
+    }
+  });
+  sceneManager.transitionOneshot(new MainScene());
+  //sceneManager.transition("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
 }
 
@@ -37,5 +42,5 @@ void keyReleased() {
 void drawSceneName() {
   fill(0, 408, 612, 100);
   textSize(32);
-  text(sceneManager.activeScene.id, 40, 40);
+  text(sceneManager.getActiveSceneId(), 40, 40);
 }
