@@ -18,9 +18,10 @@ final class MainScene extends Scene {
     final Text score2Text = new Text(uiArea, uiArea.posByAnchor(new Rect(150,50),Anchor.TopCenter),"0",40,player2Color);
 
     final Area overRayArea = new Area(this, new Rect(0,0,screen.getWidth(),screen.getHeight()),#dd000000);
-    final Text menuText = new Text(overRayArea, overRayArea.posByAnchor(new Rect(0,50),Anchor.TopCenter),"Menu",50,#ffffff);
-    final Button restartButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0,-50,100,50),Anchor.MiddleCenter),this,"Restart");
-    final Button menuCancelButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0,50,100,50),Anchor.MiddleCenter),this,"Cancel");
+    final Text menuText = new Text(overRayArea, overRayArea.posByAnchor(new Rect(0,50),Anchor.TopCenter),"メニュー",50,#ffffff);
+    final Button restartButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0,-80,300,50),Anchor.MiddleCenter),this,"やり直す");
+    final Button titleButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0,0,300,50),Anchor.MiddleCenter),this,"タイトルに戻る");
+    final Button menuCancelButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0,80,300,50),Anchor.MiddleCenter),this,"閉じる");
 
     public MainScene() {
     }
@@ -36,6 +37,9 @@ final class MainScene extends Scene {
         });
         restartButton.setOnClickListener(()->{
             sceneManager.changeOneshot(new MainScene());
+        });
+        titleButton.setOnClickListener(()->{
+            sceneManager.change("title");
         });
     }
     void sceneUpdate() {

@@ -8,3 +8,11 @@ void autoMan(Area area,Paddle player,Ball ball){
         player.down(area);
     }
 }
+
+boolean isParentsEnabled(GameObject go){
+    if(go.parent!=null&&go.parent instanceof GameObject){
+        return go.enabled&&isParentsEnabled((GameObject)go.parent);
+    }else{
+        return go.enabled;
+    }
+}

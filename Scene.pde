@@ -22,7 +22,7 @@ import java.util.Collections;
                 ((Clickable)g).isMouseClick = false;
               }
           })
-          .filter(g->g.enabled && g.rect.isPointWithIn(mouseX,mouseY) )
+          .filter(g->g.enabled && isParentsEnabled(g) && g.rect.isPointWithIn(mouseX,mouseY) )
           .findFirst()
           .ifPresent(g->{
             if(mousePressed){
@@ -41,7 +41,6 @@ import java.util.Collections;
           ((Clickable)clickingGameObject).isMouseClick = false;
           ((Clickable)clickingGameObject).isMouseHover = false;
         }
-        
         clickingGameObject=null;
       }
     }
@@ -169,6 +168,8 @@ final  class SceneManager {
   private void change(String sceneId,Scene scene){
     activeScene.destroy();
     activeScene = scene;
+    //旧Sceneの参照が外れるのでGCの実行を提案
+    System.gc();
     activeScene.setup();
     activeSceneId = sceneId;
   }

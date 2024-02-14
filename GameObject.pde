@@ -7,8 +7,10 @@ abstract class GameObject {
   public final Scene getActiveScene() {
     return sceneManager.activeScene;
   }
+  final IGameObjectTree parent;
   GameObject(IGameObjectTree parent,Rect rect) {
     this.rect=rect;
+    this.parent=parent;
     //一般的に良くないとされている"this"のリークは気にしない
     parent.addChild(this);
   }

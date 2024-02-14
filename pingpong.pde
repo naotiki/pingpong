@@ -9,10 +9,12 @@ final SceneManager sceneManager = new SceneManager();
 final KeyEventManager keyEventManager = new KeyEventManager();
 
 private final boolean isDebug = true;
-
+PFont defaultFont;
 //各種イベントの伝播
 void setup() {
   frameRate(FRAME_RATE);
+  defaultFont = loadFont("DotGothic16-Regular-48.vlw"); 
+  textFont(defaultFont, 32); 
   screen.applySize();
   sceneManager.registerScenes(new HashMap<String, Scene>() {
     {
@@ -26,10 +28,11 @@ void setup() {
 
 void draw() {
   background(0);
-  if (isDebug) {
-    drawSceneName();
-  }
+  
   sceneManager.activeScene.update();
+  if (isDebug) {
+    debugDraw();
+  }
 }
 
 void keyPressed() {
@@ -41,8 +44,14 @@ void keyReleased() {
   keyEventManager.keyReleased();
 }
 
-void drawSceneName() {
-  fill(0, 408, 612, 100);
+void debugDraw() {
+  textAlign(LEFT, CENTER);
+  fill(#ee00cc00);
   textSize(32);
   text(sceneManager.getActiveSceneId(), 40, 40);
+  Runtime runtime = Runtime.getRuntime();
+  long max = runtime.totalMemory();
+  long free = runtime.freeMemory();
+  long used = max - free;
+  text(str(used/1024)+" KB", 40, 80);
 }
