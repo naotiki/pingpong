@@ -16,8 +16,6 @@ final class Button extends Clickable implements IGameObjectTree{
   }
   void setup(){
   }
-  private boolean mousePressing = false;
-  private boolean mouseHovering = false;
   void draw(){
     rectMode(CORNER);
     strokeWeight(1);
@@ -28,11 +26,7 @@ final class Button extends Clickable implements IGameObjectTree{
     } else {
       fill(TEXTCOLOR_DEFAULT);
     }
-    rect(rect.x,rect.y,rect.w,rect.h,12); 
-    mouseHovering = false;
-  }
-  boolean isMouseOver()  {
-    return mouseX >= rect.x && mouseX <= rect.x+rect.w && mouseY >= rect.y && mouseY <= rect.y+rect.h;
+    rect(rect.x,rect.y,rect.w,rect.h,12);
   }
   void setOnClickListener(OnClickListner listener){
     this.listener = listener;
