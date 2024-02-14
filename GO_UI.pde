@@ -1,4 +1,4 @@
-final class Button extends Clickable {
+final class Button extends Clickable implements IGameObjectTree{
   
   static final int TEXTCOLOR_DEFAULT =0xff;
   static final int COLOR_HOVER = 0xee;
@@ -6,13 +6,13 @@ final class Button extends Clickable {
 
   private Text tmp;
   private OnClickListner listener;
-  Button(Scene scene, Rect rect,String text,OnClickListner listener) {
-    super(scene, rect);
-    tmp = new Text(scene, rect.posByAnchor(new Rect(0,0,rect.w,rect.h),Anchor.MiddleCenter), text);
+  Button(IGameObjectTree parent, Rect rect,Scene scene,String text,OnClickListner listener) {
+    super(parent, rect,scene);
+    tmp = new Text(this, rect.posByAnchor(new Rect(0,0,rect.w,rect.h),Anchor.MiddleCenter), text);
     this.listener = listener;
   }
-  Button(Scene scene, Rect rect,String text) {
-    this(scene, rect,text,null);
+  Button(IGameObjectTree parent, Rect rect,Scene scene,String text) {
+    this(parent, rect,scene,text,null);
   }
   void setup(){
   }
@@ -40,6 +40,14 @@ final class Button extends Clickable {
   void onClicked(){
      if(listener!=null) listener.onClicked();
   }
+
+  List<GameObject> children = new ArrayList<GameObject>();
+  void addChild(GameObject child){
+    children.add(child);
+  }
+  List<GameObject> getChildren(){
+    return children;
+  }
 }
 
 final class Text extends GameObject {
@@ -48,10 +56,10 @@ final class Text extends GameObject {
   String text;
   int textSize = TEXTSIZE_DEFAULT;
   color textColor = TEXTCOLOR_DEFAULT;
-  Text(Scene scene, Rect rect, String text) {
+  Text(IGameObjectTree scene, Rect rect, String text) {
     this(scene, rect,text,TEXTSIZE_DEFAULT,TEXTCOLOR_DEFAULT);
   }
-  Text(Scene scene, Rect rect, String text,int textSize,color textColor) {
+  Text(IGameObjectTree scene, Rect rect, String text,int textSize,color textColor) {
     super(scene, rect);
     this.text = text;
     this.textSize = textSize;

@@ -3,13 +3,15 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.Collections;
 
- abstract class Scene {
-  private final class MouseEventManager{
-    List<Pointerble> gameObjects = new ArrayList<Pointerble>();
+ abstract class Scene implements IGameObjectTree {
+  final class MouseEventManager{
+    private List<Pointerble> gameObjects = new ArrayList<Pointerble>();
     MouseEventManager(){
       
     }
-    
+    void add(Pointerble p){
+      gameObjects.add(0,p);
+    }
     Pointerble clickingGameObject=null;
     void update(){
       if (clickingGameObject==null) {
@@ -36,26 +38,33 @@ import java.util.Collections;
       }else if(!mousePressed&&clickingGameObject!=null){
         if(clickingGameObject instanceof Clickable){
           ((Clickable)clickingGameObject).onClicked();
+          ((Clickable)clickingGameObject).isMouseClick = false;
+          ((Clickable)clickingGameObject).isMouseHover = false;
         }
+        
         clickingGameObject=null;
       }
     }
   }
-  private MouseEventManager mouseEventManager = new MouseEventManager();
-  void putPointerble(Pointerble p){
-    mouseEventManager.gameObjects.add(0,p);
+  final MouseEventManager mouseEventManager = new MouseEventManager();
+  void add(Pointerble p){
+    mouseEventManager.add(p);
   }
   List<GameObject> gameObjects = new ArrayList<GameObject>();
   private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
   private boolean isLockedGameObjects = false;
-  final void addGameObject(GameObject go) {
+  final void addChild(GameObject go) {
     if(isLockedGameObjects) {
       standbyGameObjects.add(go);
     }else{
       gameObjects.add(go);
     }
-    
   }
+
+  final List<GameObject> getChildren() {
+    return gameObjects;
+  }
+
   void sceneSetup() {
   }
   void sceneUpdate(){
@@ -65,15 +74,36 @@ import java.util.Collections;
     println("Start:main Setup");
     sceneSetup();
     isLockedGameObjects = true;
-    gameObjects.forEach( (g) -> {
-      g.setup();
-    }
-    );
+    setupAll(getChildren());
     isLockedGameObjects = false;
     gameObjects.addAll(standbyGameObjects);
     standbyGameObjects.clear();
     println("End:main Setup");
   }
+  
+  final void setupAll(List<GameObject> children){
+    children.forEach( (g) -> {
+      println("Start:"+g.getClass().getSimpleName()+" Setup");
+      if(!g.enabled) return;
+      g.setup();
+      if(g instanceof IGameObjectTree){
+        println(g.getClass().getSimpleName()+" has children");
+        setupAll(((IGameObjectTree)g).getChildren() );
+      }
+    }
+    );
+  }
+  final void drawAll(List<GameObject> children){
+    children.forEach( (g) -> {
+      if(!g.enabled) return;
+      g.draw();
+      if(g instanceof IGameObjectTree){
+        drawAll(((IGameObjectTree)g).getChildren() );
+      }
+    }
+    );
+  }
+
   final void update() {
 
 
@@ -83,10 +113,7 @@ import java.util.Collections;
     
     mouseEventManager.update();
 
-    gameObjects.forEach( (g) -> {
-      g.draw();
-    }
-    );
+    drawAll(getChildren());
     isLockedGameObjects = false;
     gameObjects.addAll(standbyGameObjects);
     standbyGameObjects.clear();
@@ -97,6 +124,7 @@ import java.util.Collections;
   // Sceneを離れるとき すべてを破壊してきれいにする
   void destroy() {
   };
+
 }
 
 

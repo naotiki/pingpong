@@ -21,7 +21,7 @@ final class Ball extends GameObject {
     return new PVector().set(velocityVec).normalize().mult(-0.1);
   } 
   Area area;
-  Ball(Scene scene, Rect rect,Area area) {
+  Ball(IGameObjectTree scene, Rect rect,Area area) {
     super(scene, rect);
     this.area = area;
   }

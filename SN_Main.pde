@@ -1,33 +1,45 @@
 final class MainScene extends Scene {
 
-    color playerColor = #ff5555;
-    color player2Color = #5555ff;
+    final color playerColor = #ff5555;
+    final color player2Color = #5555ff;
 
     
-    Area gameArea = new Area(this, new Rect(0,100,screen.getWidth(),screen.getHeight()-100),#000000);
+    final Area gameArea = new Area(this, new Rect(0,100,screen.getWidth(),screen.getHeight()-100),#000000);
+    final Paddle player = new Paddle(gameArea, gameArea.posByAnchor(PaddleSize.pos(50,0),Anchor.MiddleLeft),playerColor);
+    final Paddle player2 = new Paddle(gameArea, gameArea.posByAnchor(PaddleSize.pos(-50,0),Anchor.MiddleRight),player2Color);
+    final Ball ball = new Ball(gameArea, BallSize.pos(gameArea.centerX(), gameArea.centerY()),gameArea);
 
-    Paddle player = new Paddle(this, gameArea.posByAnchor(PaddleSize.pos(50,0),Anchor.MiddleLeft),playerColor);
-    Paddle player2 = new Paddle(this, gameArea.posByAnchor(PaddleSize.pos(-50,0),Anchor.MiddleRight),player2Color);
-    Ball ball = new Ball(this, BallSize.pos(gameArea.centerX(), gameArea.centerY()),gameArea);
 
+    final Area uiArea = new Area(this, new Rect(0,0,screen.getWidth(),100),#dddddd);
+    final Button menuButton = new Button(uiArea, uiArea.posByAnchor(new Rect(0,25,100,50),Anchor.TopCenter),this,"Menu");
+    private int score1=0;
+    private int score2=0;
+    final Text score1Text = new Text(uiArea, uiArea.posByAnchor(new Rect(-150,50),Anchor.TopCenter),"0",40,playerColor);
+    final Text score2Text = new Text(uiArea, uiArea.posByAnchor(new Rect(150,50),Anchor.TopCenter),"0",40,player2Color);
 
-    Area uiArea = new Area(this, new Rect(0,0,screen.getWidth(),100),#dddddd);
-    Button button = new Button(this, uiArea.posByAnchor(new Rect(0,25,100,50),Anchor.TopCenter),"Start");
-    int score1=0;
-    int score2=0;
-    Text score1Text = new Text(this, uiArea.posByAnchor(new Rect(-150,50),Anchor.TopCenter),"0",40,playerColor);
-    Text score2Text = new Text(this, uiArea.posByAnchor(new Rect(150,50),Anchor.TopCenter),"0",40,player2Color);
-
-    //Area overRayArea = new Area(this, new Rect(0,0,screen.getWidth(),screen.getHeight()),#dd000000);
+    final Area overRayArea = new Area(this, new Rect(0,0,screen.getWidth(),screen.getHeight()),#dd000000);
+    final Text menuText = new Text(overRayArea, overRayArea.posByAnchor(new Rect(0,50),Anchor.TopCenter),"Menu",50,#ffffff);
+    final Button restartButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0,-50,100,50),Anchor.MiddleCenter),this,"Restart");
+    final Button menuCancelButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0,50,100,50),Anchor.MiddleCenter),this,"Cancel");
 
     public MainScene() {
     }
     void sceneSetup(){
-        button.setOnClickListener(()->{
+        overRayArea.enabled=false;
+        menuButton.setOnClickListener(()->{
+            overRayArea.enabled=true;
+            gameArea.enabled=false;
+        });
+        menuCancelButton.setOnClickListener(()->{
+            overRayArea.enabled=false;
+            gameArea.enabled=true;
+        });
+        restartButton.setOnClickListener(()->{
             sceneManager.changeOneshot(new MainScene());
         });
     }
     void sceneUpdate() {
+        //プレイヤーの反射処理
         Rect ballRect= ball.rect;
         Rect playerRect = player.rect;
         Rect player2Rect = player2.rect;
@@ -60,6 +72,7 @@ final class MainScene extends Scene {
             ball.reset();
         }
         
+        // 移動処理
         if (keyEventManager.isPressKey('w')) {
             player.up(gameArea);
         } 
@@ -73,7 +86,8 @@ final class MainScene extends Scene {
             player2.down(gameArea);
         }
         
-        //autoMan(gameArea,player2,ball);
+        autoMan(gameArea,player,ball);
+        autoMan(gameArea,player2,ball);
     }
     
     void keyPressed() {

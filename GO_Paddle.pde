@@ -1,6 +1,6 @@
 final class Paddle extends GameObject {
   color fillColor;
-  Paddle(Scene scene, Rect rect,color fillColor) {
+  Paddle(IGameObjectTree scene, Rect rect,color fillColor) {
     super(scene, rect);
     this.fillColor = fillColor;
   }
