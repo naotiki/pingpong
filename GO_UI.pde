@@ -1,8 +1,8 @@
 final class Button extends Clickable implements IGameObjectTree{
   
-  static final int TEXTCOLOR_DEFAULT =0xff;
-  static final int COLOR_HOVER = 0xee;
-  static final int COLOR_PRESS = 0xbb;
+  static final color TEXTCOLOR_DEFAULT =#ffffff;
+  static final color COLOR_HOVER = #e9e9e9;
+  static final color COLOR_PRESS = #bbbbbb;
 
   private Text tmp;
   private OnClickListner listener;
