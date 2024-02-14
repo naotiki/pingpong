@@ -47,10 +47,14 @@ abstract class RigitBody extends GameObject {
       super(scene,rect);
       scene.putPointerble(this);
     }
+    boolean isMouseHover =false;
   }
   abstract class Clickable extends Pointerble  {
     Clickable(Scene scene,Rect rect) {
       super(scene,rect);
     }
+    boolean isMouseClick =false;
+    //ボタンが離されたとき発火
     abstract void onClicked();
+    
  }

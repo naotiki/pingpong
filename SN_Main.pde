@@ -18,7 +18,7 @@ final class MainScene extends Scene {
     Text score1Text = new Text(this, uiArea.posByAnchor(new Rect(-150,50),Anchor.TopCenter),"0",40,playerColor);
     Text score2Text = new Text(this, uiArea.posByAnchor(new Rect(150,50),Anchor.TopCenter),"0",40,player2Color);
 
-    Area overRayArea = new Area(this, new Rect(0,0,screen.getWidth(),screen.getHeight()),#dd000000);
+    //Area overRayArea = new Area(this, new Rect(0,0,screen.getWidth(),screen.getHeight()),#dd000000);
 
     public MainScene() {
     }

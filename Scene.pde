@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import java.util.Collections;
 
  abstract class Scene {
-  final class MouseEventManager{
+  private final class MouseEventManager{
     List<Pointerble> gameObjects = new ArrayList<Pointerble>();
     MouseEventManager(){
       
@@ -12,13 +12,26 @@ import java.util.Collections;
     
     Pointerble clickingGameObject=null;
     void update(){
-      if (mousePressed&&clickingGameObject==null) {
+      if (clickingGameObject==null) {
         gameObjects.stream()
+          .peek(g->{
+            g.isMouseHover = false;
+            if (g instanceof Clickable) {
+                ((Clickable)g).isMouseClick = false;
+              }
+          })
           .filter(g->g.enabled && g.rect.isPointWithIn(mouseX,mouseY) )
           .findFirst()
           .ifPresent(g->{
-            clickingGameObject=g;
-            println("clickingGameObject:"+g.getClass().getSimpleName());
+            if(mousePressed){
+              if (g instanceof Clickable) {
+                ((Clickable)g).isMouseClick = true;
+              }
+              clickingGameObject=g;
+              println("clickingGameObject:"+g.getClass().getSimpleName());
+            }
+              g.isMouseHover = true;
+            
           });
       }else if(!mousePressed&&clickingGameObject!=null){
         if(clickingGameObject instanceof Clickable){

@@ -17,29 +17,20 @@ final class Button extends Clickable {
   void setup(){
   }
   private boolean mousePressing = false;
+  private boolean mouseHovering = false;
   void draw(){
-    /* if (mousePressed) {
-      if(!mousePressing&&isMouseOver()){
-        mousePressing = true;
-      }
-    }else {
-      if(mousePressing){
-        if(listener!=null) listener.onClicked();
-      }
-      mousePressing = false;
-    } */
     rectMode(CORNER);
     strokeWeight(1);
-    if(mousePressing){
+    if(isMouseClick){
       fill(COLOR_PRESS);
-    }else if(isMouseOver()) {
+    }else if(isMouseHover) {
       fill(COLOR_HOVER);
     } else {
       fill(TEXTCOLOR_DEFAULT);
     }
     rect(rect.x,rect.y,rect.w,rect.h,12); 
+    mouseHovering = false;
   }
-
   boolean isMouseOver()  {
     return mouseX >= rect.x && mouseX <= rect.x+rect.w && mouseY >= rect.y && mouseY <= rect.y+rect.h;
   }

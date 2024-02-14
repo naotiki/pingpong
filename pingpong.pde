@@ -1,7 +1,7 @@
 import java.util.List;
 import java.lang.*;
 import java.lang.reflect.*;
-final int FRAME_RATE = 30;
+final int FRAME_RATE = 60;
 final float UNIT = 60f/FRAME_RATE;
 
 final ScreenManager screen = new ScreenManager(1000, 700, this);
