@@ -4,47 +4,39 @@
 // target コライダーの原点
 // vector コライダーの長さと方向
 PVector calcCollisionPoint(PVector object,PVector velocity,PVector target,PVector vector){
-    float tan1 = tan(velocity.heading());
-    float tan2 = tan(vector.heading());
+    Float tan1 = tan(velocity.heading());
+    Float tan2 = tan(vector.heading());
     Float x=null;
     Float y=null;
-    switch (tan1) {
-        case 0 :
-            y = object.y;
-            break;	
-        case infinity:
-            x = object.x;
-            break;
-        case -infinity:
-            x = - object.x
-            break;
+    if(tan1 == 0f){
+        y = object.y;
+    }else if(tan1.isInfinite() && tan1>0){
+        x = object.x;
+    }else if(tan1.isInfinite() && tan1<0){
+        x = - object.x;
     }
-    switch (tan2) {
-        case 0 :
-            if (y!=null) return null;//点ではないので  解無し
-            x = (target.y - object.y)/tan1
-            y = target.y 
-            break;	
-        case infinity:
-            if (x!=null) return null;//点ではないので  解無し
-            x = target.x;
-            y = tan1*x+object.y 
-            break;
-        case -infinity:
-            if (x!=null) return null;//点ではないので  解無し
-            x = - target.x;
+
+    if(tan2==0){
+        if (y!=null) return null;//点ではないので  解無し
+        x = (target.y - object.y)/tan1;
+        y = target.y;
+    }else if(tan2.isInfinite() && tan2>0){
+        if (x!=null) return null;//点ではないので  解無し
+        x = target.x;
+        y = tan1*x+object.y; 
+    }else if(tan2.isInfinite() && tan2<0){
+        if (x!=null) return null;//点ではないので  解無し
+        x = - target.x;
+        y = tan1*x+object.y;
+    }else{
+        if(x!=null){
             y = tan1*x+object.y;
-            break;
-        default :
-            if(x!=null){
-                y = tan1*x+object.y;
-            }else if(y!=null){             
-                x=(object.y-target.y)/tan2
-            }else{
-                x = (target.y-object.y)/(tan1-tan2);
-                y = tan1*x+object.y;
-            }
-        break;	
+        }else if(y!=null){             
+            x=(object.y-target.y)/tan2;
+        }else{
+            x = (target.y-object.y)/(tan1-tan2);
+            y = tan1*x+object.y;
+        }
     }
     // x,yが衝突点候補
     println("x:"+str(x)+", y:"+str(y));
