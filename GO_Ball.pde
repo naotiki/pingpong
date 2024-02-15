@@ -6,7 +6,7 @@ final class Ball extends GameObject {
   PVector velocityVec = randomAngleVec().setMag(speed);
 
   PVector randomAngleVec(){
-    float radian = random(-radians(60),radians(60) )+round(random(1))*PI;
+    float radian = random(radians(45),radians(60) )+round(random(3))*HALF_PI;
     return PVector.fromAngle(radian);
   }
 

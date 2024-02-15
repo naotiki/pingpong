@@ -90,7 +90,7 @@ final class MainScene extends Scene {
             player2.down(gameArea);
         }
         
-        autoMan(gameArea,player,ball);
+        //autoMan(gameArea,player,ball);
         autoMan(gameArea,player2,ball);
     }
     

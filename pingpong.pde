@@ -23,7 +23,7 @@ void setup() {
         put("title", new TitleScene());
     }
   });
-  sceneManager.changeOneshot(new MainScene());
+  sceneManager.changeOneshot(new TestScene());
   //sceneManager.change("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
   if(isDebug){
@@ -33,9 +33,12 @@ void setup() {
 }
 
 void draw() {
-  background(0);
   
+  
+  background(0);
   sceneManager.activeScene.update();
+  
+
   if (isDebug) {
     debugDraw();
   }
@@ -49,7 +52,6 @@ void keyPressed() {
 void keyReleased() {
   keyEventManager.keyReleased();
 }
-
 void debugDraw() {
   textAlign(LEFT, CENTER);
   fill(#ee00cc00);
@@ -60,4 +62,9 @@ void debugDraw() {
   long free = runtime.freeMemory();
   long used = max - free;
   text(str(used/1024)+" KB", 40, 80);
+  stroke(#ee00cccc);
+  line(mouseX-10, mouseY ,mouseX+10, mouseY);
+  line(mouseX, mouseY-10, mouseX, mouseY+10);
+  textAlign(CENTER, CENTER);
+  text("("+mouseX+","+mouseY+")", mouseX, mouseY-20);
 }

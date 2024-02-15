@@ -54,6 +54,17 @@ static class Rect {
   public float centerY(){
     return y + h/2;
   }
+  public PVector[] vertex(){
+    PVector[] vertex = new PVector[4];
+    vertex[0] = new PVector(left(),top());
+    vertex[1] = new PVector(right(),top());
+    vertex[2] = new PVector(right(),bottom());
+    vertex[3] = new PVector(left(),bottom());
+    return vertex;
+  }
+  PVector getPosVec(){
+    return new PVector(x,y);
+  }
 
   //コピーして位置を変更
   Rect pos(float x, float y){
