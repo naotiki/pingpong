@@ -22,7 +22,8 @@ public class DebugApplet extends PApplet {
   }
   void drawTree(UIBuilder u,List<GameObject> list){
         list.forEach(g->{
-            u.text((g.enabled ? "o" : "x")+" "+g.getClass().getSimpleName());
+            String str = String.format("(%5.2f, %5.2f)", g.rect.x, g.rect.y);
+            u.text((g.enabled ? "o" : "x")+" "+g.getClass().getSimpleName()+" "+str);
             if(g instanceof IGameObjectTree){
                 u.indent();
                 drawTree(u,((IGameObjectTree)g).getChildren() );
