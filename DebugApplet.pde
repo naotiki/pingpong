@@ -4,9 +4,12 @@ public class DebugApplet extends PApplet {
   public void settings() {
     size(400, 800);
   }
+  public void setup() {
+    textFont(monoFont,32);
+  }
   public void draw() {
     background(255);
-    column(this,new Rect(0,0),20,#000000,u->{
+    column(this,new Rect(0,0),18,#000000,u->{
         u.text(sceneManager.getActiveSceneId());
         Runtime runtime = Runtime.getRuntime();
         long max = runtime.totalMemory();
@@ -22,7 +25,7 @@ public class DebugApplet extends PApplet {
   }
   void drawTree(UIBuilder u,List<GameObject> list){
         list.forEach(g->{
-            String str = String.format("(%5.2f, %5.2f)", g.rect.x, g.rect.y);
+            String str = String.format("(%5.1f, %5.1f)", g.rect.x, g.rect.y);
             u.text((g.enabled ? "o" : "x")+" "+g.getClass().getSimpleName()+" "+str);
             if(g instanceof IGameObjectTree){
                 u.indent();

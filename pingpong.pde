@@ -10,10 +10,12 @@ final KeyEventManager keyEventManager = new KeyEventManager();
 
 private final boolean isDebug = true;
 PFont defaultFont;
+PFont monoFont;
 //各種イベントの伝播
 void setup() {
   frameRate(FRAME_RATE);
   defaultFont = loadFont("DotGothic16-Regular-48.vlw"); 
+  monoFont = loadFont("UDEVGothic-Regular-48.vlw");
   textFont(defaultFont, 32); 
   screen.applySize();
   sceneManager.registerScenes(new HashMap<String, Scene>() {
