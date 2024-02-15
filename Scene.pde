@@ -49,7 +49,7 @@ import java.util.Collections;
   void add(Pointerble p){
     mouseEventManager.add(p);
   }
-  List<GameObject> gameObjects = new ArrayList<GameObject>();
+  private List<GameObject> gameObjects = new ArrayList<GameObject>();
   private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
   private boolean isLockedGameObjects = false;
   final void addChild(GameObject go) {

@@ -24,6 +24,10 @@ void setup() {
   sceneManager.changeOneshot(new MainScene());
   //sceneManager.change("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
+  if(isDebug){
+    DebugApplet debugApplet = new DebugApplet();
+    PApplet.runSketch(new String[]{"Debug"}, debugApplet);
+  }
 }
 
 void draw() {
