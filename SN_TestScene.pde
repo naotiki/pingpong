@@ -1,7 +1,7 @@
 final class TestScene extends Scene {
     final Area gameArea = new Area(this, new Rect(0,0,screen.getWidth(),screen.getHeight()),#000000);
     final NewBall ball = new NewBall(gameArea, BallSize.pos(gameArea.centerX()-150, gameArea.centerY()-70),gameArea);
-    final Wall wall = new Wall(gameArea, BallSize.pos(gameArea.centerX(), gameArea.centerY()-50),radians(90),500);
+    final Wall wall = new Wall(gameArea, BallSize.pos(gameArea.centerX(), gameArea.centerY()-50),radians(60),500);
     final Button menuButton = new Button(gameArea, gameArea.posByAnchor(new Rect(0,25,150,50),Anchor.TopCenter),this,"Reload");
     void sceneSetup(){
         PVector point = ball.rect.vertex()[0];
@@ -12,6 +12,7 @@ final class TestScene extends Scene {
         });
     }
     void sceneUpdate(){
+        wall.vec.rotate(radians(1));
         Integer nearestIndex = null;
         PVector targetPoint = null;
         Float nearestDistanse = null;
@@ -32,12 +33,14 @@ final class TestScene extends Scene {
         }
         //Collision
         PVector v=ball.velocity.copy();
-        float radian=PVector.angleBetween(v,wall.vec);
+        float radian=2*wall.vec.heading()-2*v.heading();
         println(radian);
         float speed=v.mag();
-        ball.velocity.x=speed*cos(radian);
-        ball.velocity.y=-speed*sin(radian);
+        //ball.velocity.x=speed*cos(radian);
+
         
+        
+        ball.velocity.rotate(2*wall.vec.heading()-2*v.heading());
         switch (nearestIndex) {
             case 0:
             ball.rect.setPos(targetPoint.x,targetPoint.y);
@@ -56,7 +59,8 @@ final class TestScene extends Scene {
         stroke(#ff0000);
         line(ball.rect.x,ball.rect.y,(ball.rect.x+ball.velocity.x)*10,(ball.rect.y+ball.velocity.y)*10);
         //Collision End
-        delay(5000);
+        //delay(5000);
+        
     }
 }
 final class Wall extends GameObject {
