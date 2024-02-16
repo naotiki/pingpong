@@ -40,7 +40,7 @@ class Particle {
   // Note we are ignoring "mass" here
   void applyForce(PVector f) {
     acc.add(f);
-  }  
+  }
 
   // Method to update position
   void update() {
@@ -72,7 +72,7 @@ class Particle {
 }
 
 // A class to describe a group of Particles
-// An ArrayList is used to manage the list of Particles 
+// An ArrayList is used to manage the list of Particles
 
 class ParticleSystem {
 
@@ -80,11 +80,11 @@ class ParticleSystem {
   PVector origin;                   // An origin point for where particles are birthed
   PImage img;
   color tintColor;
-  ParticleSystem(int num, PVector v,PImage img){
-    this(num,v,img,#ffffff);
+  ParticleSystem(int num, PVector v, PImage img) {
+    this(num, v, img, #ffffff);
   }
   int initNum;
-  ParticleSystem(int num, PVector v, PImage img_,color tintColor_) {
+  ParticleSystem(int num, PVector v, PImage img_, color tintColor_) {
     particles = new ArrayList<Particle>();              // Initialize the arraylist
     origin = v.copy();                                   // Store the origin point
     img = img_;
@@ -92,9 +92,9 @@ class ParticleSystem {
     initNum = num;
     init();
   }
-  void init(){
+  void init() {
     for (int i = 0; i < initNum; i++) {
-      particles.add(new Particle(origin, img,tintColor));         // Add "num" amount of particles to the arraylist
+      particles.add(new Particle(origin, img, tintColor));         // Add "num" amount of particles to the arraylist
     }
   }
   void run() {
@@ -113,9 +113,9 @@ class ParticleSystem {
     for (Particle p : particles) {
       p.applyForce(dir);
     }
-  }  
+  }
 
   void addParticle() {
-    particles.add(new Particle(origin, img,tintColor));
+    particles.add(new Particle(origin, img, tintColor));
   }
 }

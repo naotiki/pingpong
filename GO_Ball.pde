@@ -5,23 +5,23 @@ final class Ball extends GameObject {
   //速度ベクトル Defaultではランダム
   PVector velocityVec = randomAngleVec().setMag(speed);
 
-  PVector randomAngleVec(){
-    float radian = random(radians(45),radians(60) )+round(random(3))*HALF_PI;
+  PVector randomAngleVec() {
+    float radian = random(radians(45), radians(60) )+round(random(3))*HALF_PI;
     return PVector.fromAngle(radian);
   }
 
   ParticleSystem ps;
-  void setParticleColor(color c){
+  void setParticleColor(color c) {
     ps.tintColor = c;
   }
 
   // Effectの方向ベクトル
-  PVector getEffectVec(){
+  PVector getEffectVec() {
     // 正規化した速度の逆向き * -0.1
     return new PVector().set(velocityVec).normalize().mult(-0.1);
-  } 
+  }
   Area area;
-  Ball(IGameObjectTree scene, Rect rect,Area area) {
+  Ball(IGameObjectTree scene, Rect rect, Area area) {
     super(scene, rect);
     this.area = area;
   }
@@ -31,7 +31,7 @@ final class Ball extends GameObject {
     PImage img = loadImage("ball_effect.png");
 
     //なんかエフェクトがつくやつ
-    ps = new ParticleSystem(50, new PVector(rect.centerX(),rect.centerY()), img,DEFAULT_TINTCOLOR);
+    ps = new ParticleSystem(50, new PVector(rect.centerX(), rect.centerY()), img, DEFAULT_TINTCOLOR);
   }
 
   void draw() {
@@ -55,12 +55,12 @@ final class Ball extends GameObject {
     ellipse(rect.x, rect.y, rect.w, rect.h);
   }
 
-  void reset(){
-      ps.tintColor = DEFAULT_TINTCOLOR;
-      rect.x = screen.centerX();
-      rect.y = screen.centerY();
-      velocityVec = randomAngleVec().setMag(speed);
-      ps.origin.set(rect.centerX(), rect.centerY());
-      ps.init();
+  void reset() {
+    ps.tintColor = DEFAULT_TINTCOLOR;
+    rect.x = screen.centerX();
+    rect.y = screen.centerY();
+    velocityVec = randomAngleVec().setMag(speed);
+    ps.origin.set(rect.centerX(), rect.centerY());
+    ps.init();
   }
 }

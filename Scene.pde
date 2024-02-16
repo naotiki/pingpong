@@ -3,40 +3,40 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.Collections;
 
- abstract class Scene implements IGameObjectTree {
-  final class MouseEventManager{
+abstract class Scene implements IGameObjectTree {
+  final class MouseEventManager {
     private List<Pointerble> gameObjects = new ArrayList<Pointerble>();
-    MouseEventManager(){
-      
+    MouseEventManager() {
     }
-    void add(Pointerble p){
-      gameObjects.add(0,p);
+    void add(Pointerble p) {
+      gameObjects.add(0, p);
     }
     Pointerble clickingGameObject=null;
-    void update(){
+    void update() {
       if (clickingGameObject==null) {
         gameObjects.stream()
-          .peek(g->{
-            g.isMouseHover = false;
-            if (g instanceof Clickable) {
-                ((Clickable)g).isMouseClick = false;
-              }
-          })
-          .filter(g->g.enabled && isParentsEnabled(g) && g.rect.isPointWithIn(mouseX,mouseY) )
+          .peek(g-> {
+          g.isMouseHover = false;
+          if (g instanceof Clickable) {
+            ((Clickable)g).isMouseClick = false;
+          }
+        }
+        )
+        .filter(g->g.enabled && isParentsEnabled(g) && g.rect.isPointWithIn(mouseX, mouseY) )
           .findFirst()
-          .ifPresent(g->{
-            if(mousePressed){
-              if (g instanceof Clickable) {
-                ((Clickable)g).isMouseClick = true;
-              }
-              clickingGameObject=g;
-              println("clickingGameObject:"+g.getClass().getSimpleName());
+          .ifPresent(g-> {
+          if (mousePressed) {
+            if (g instanceof Clickable) {
+              ((Clickable)g).isMouseClick = true;
             }
-              g.isMouseHover = true;
-            
-          });
-      }else if(!mousePressed&&clickingGameObject!=null){
-        if(clickingGameObject instanceof Clickable){
+            clickingGameObject=g;
+            println("clickingGameObject:"+g.getClass().getSimpleName());
+          }
+          g.isMouseHover = true;
+        }
+        );
+      } else if (!mousePressed&&clickingGameObject!=null) {
+        if (clickingGameObject instanceof Clickable) {
           ((Clickable)clickingGameObject).onClicked();
           ((Clickable)clickingGameObject).isMouseClick = false;
           ((Clickable)clickingGameObject).isMouseHover = false;
@@ -46,16 +46,16 @@ import java.util.Collections;
     }
   }
   final MouseEventManager mouseEventManager = new MouseEventManager();
-  void add(Pointerble p){
+  void add(Pointerble p) {
     mouseEventManager.add(p);
   }
   private List<GameObject> gameObjects = new ArrayList<GameObject>();
   private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
   private boolean isLockedGameObjects = false;
   final void addChild(GameObject go) {
-    if(isLockedGameObjects) {
+    if (isLockedGameObjects) {
       standbyGameObjects.add(go);
-    }else{
+    } else {
       gameObjects.add(go);
     }
   }
@@ -66,10 +66,9 @@ import java.util.Collections;
 
   void sceneSetup() {
   }
-  void sceneUpdate(){
-
+  void sceneUpdate() {
   }
-  final void setup(){
+  final void setup() {
     println("Start:main Setup");
     sceneSetup();
     isLockedGameObjects = true;
@@ -79,24 +78,24 @@ import java.util.Collections;
     standbyGameObjects.clear();
     println("End:main Setup");
   }
-  
-  final void setupAll(List<GameObject> children){
+
+  final void setupAll(List<GameObject> children) {
     children.forEach( (g) -> {
       println("Start:"+g.getClass().getSimpleName()+" Setup");
-      if(!g.enabled) return;
+      if (!g.enabled) return;
       g.setup();
-      if(g instanceof IGameObjectTree){
+      if (g instanceof IGameObjectTree) {
         println(g.getClass().getSimpleName()+" has children");
         setupAll(((IGameObjectTree)g).getChildren() );
       }
     }
     );
   }
-  final void drawAll(List<GameObject> children){
+  final void drawAll(List<GameObject> children) {
     children.forEach( (g) -> {
-      if(!g.enabled) return;
+      if (!g.enabled) return;
       g.draw();
-      if(g instanceof IGameObjectTree){
+      if (g instanceof IGameObjectTree) {
         drawAll(((IGameObjectTree)g).getChildren() );
       }
     }
@@ -109,7 +108,7 @@ import java.util.Collections;
 
     sceneUpdate();
     isLockedGameObjects = true;
-    
+
     mouseEventManager.update();
 
     drawAll(getChildren());
@@ -117,16 +116,11 @@ import java.util.Collections;
     gameObjects.addAll(standbyGameObjects);
     standbyGameObjects.clear();
   }
-  
+
   // Deprected, Use "KeyEventManager"
-  void keyPressed(){}
+  void keyPressed() {
+  }
   // Sceneを離れるとき すべてを破壊してきれいにする
   void destroy() {
   };
-
 }
-
-
-
-
-

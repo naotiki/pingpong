@@ -8,7 +8,7 @@ abstract class GameObject {
     return sceneManager.activeScene;
   }
   final IGameObjectTree parent;
-  GameObject(IGameObjectTree parent,Rect rect) {
+  GameObject(IGameObjectTree parent, Rect rect) {
     this.rect=rect;
     this.parent=parent;
     //一般的に良くないとされている"this"のリークは気にしない
@@ -20,39 +20,37 @@ abstract class GameObject {
 
   // 描画は各自で実装
   abstract void draw();
-  
-   // 衝突判定 // これいる？
+
+  // 衝突判定 // これいる？
   /* boolean isCollision(GameObject target) {
-    return (x < target.x + target.width && x + width > target.x) && (y < target.y + target.height && y + height > target.y) ;
-  } */
-
+   return (x < target.x + target.width && x + width > target.x) && (y < target.y + target.height && y + height > target.y) ;
+   } */
 }
 
 
 
-/* 
-//TODO ???
-abstract class RigitBody extends GameObject {
-  PVector velocity = new PVector();
-  RigitBody(Scene scene, float x, float y, float width, float height) {
-    super(scene,x,y,width,height);
-  }
-  
-}
- */
-  abstract class Pointerble extends GameObject{
-    Pointerble(IGameObjectTree parent,Rect rect,Scene scene) {
-      super(parent,rect);
-      scene.add(this);
-    }
-    boolean isMouseHover =false;
-  }
-  abstract class Clickable extends Pointerble  {
-    Clickable(IGameObjectTree parent,Rect rect,Scene scene) {
-      super(parent,rect,scene);
-    }
-    boolean isMouseClick =false;
-    //ボタンが離されたとき発火
-    abstract void onClicked();
-    
+/*
+ //TODO ???
+ abstract class RigitBody extends GameObject {
+ PVector velocity = new PVector();
+ RigitBody(Scene scene, float x, float y, float width, float height) {
+ super(scene,x,y,width,height);
  }
+ 
+ }
+ */
+abstract class Pointerble extends GameObject {
+  Pointerble(IGameObjectTree parent, Rect rect, Scene scene) {
+    super(parent, rect);
+    scene.add(this);
+  }
+  boolean isMouseHover =false;
+}
+abstract class Clickable extends Pointerble {
+  Clickable(IGameObjectTree parent, Rect rect, Scene scene) {
+    super(parent, rect, scene);
+  }
+  boolean isMouseClick =false;
+  //ボタンが離されたとき発火
+  abstract void onClicked();
+}

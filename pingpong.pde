@@ -14,30 +14,31 @@ PFont monoFont;
 //各種イベントの伝播
 void setup() {
   frameRate(FRAME_RATE);
-  defaultFont = loadFont("DotGothic16-Regular-48.vlw"); 
+  defaultFont = loadFont("DotGothic16-Regular-48.vlw");
   monoFont = loadFont("UDEVGothic-Regular-48.vlw");
-  textFont(defaultFont, 32); 
+  textFont(defaultFont, 32);
   screen.applySize();
   sceneManager.registerScenes(new HashMap<String, Scene>() {
     {
-        put("title", new TitleScene());
+      put("title", new TitleScene());
     }
-  });
+  }
+  );
   sceneManager.changeOneshot(new TestScene());
   //sceneManager.change("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
-  if(isDebug){
+  if (isDebug) {
     DebugApplet debugApplet = new DebugApplet();
     PApplet.runSketch(new String[]{"Debug"}, debugApplet);
   }
 }
 
 void draw() {
-  
-  
+
+
   background(0);
   sceneManager.activeScene.update();
-  
+
 
   if (isDebug) {
     debugDraw();
@@ -63,7 +64,7 @@ void debugDraw() {
   long used = max - free;
   text(str(used/1024)+" KB", 40, 80);
   stroke(#ee00cccc);
-  line(mouseX-10, mouseY ,mouseX+10, mouseY);
+  line(mouseX-10, mouseY, mouseX+10, mouseY);
   line(mouseX, mouseY-10, mouseX, mouseY+10);
   textAlign(CENTER, CENTER);
   text("("+mouseX+","+mouseY+")", mouseX, mouseY-20);

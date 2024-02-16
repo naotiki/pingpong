@@ -8,7 +8,8 @@ final class KeyEventManager {
   static final int KEY_RELEASE = 0b100;
 
   private Map<Integer, Character> keys = new HashMap<>();
-  KeyEventManager() {}
+  KeyEventManager() {
+  }
 
   void keyPressed() {
     if (keys.containsKey(keyCode)) {
@@ -17,10 +18,10 @@ final class KeyEventManager {
     keys.put(keyCode, key);//Press
   }
 
-  boolean isPressKeyCode(int keyCode)  {
+  boolean isPressKeyCode(int keyCode) {
     return keys.containsKey(keyCode);
   }
-  boolean isPressKey(char key)  {
+  boolean isPressKey(char key) {
     return keys.containsValue(key);
   }
 
