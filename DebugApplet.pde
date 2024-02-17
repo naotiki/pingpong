@@ -5,7 +5,7 @@ public class DebugApplet extends PApplet {
     size(400, 800);
   }
   public void setup() {
-    textFont(monoFont, 32);
+    textFont(FontMono, 32);
   }
   public void draw() {
     background(255);

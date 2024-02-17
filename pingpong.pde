@@ -9,21 +9,20 @@ final SceneManager sceneManager = new SceneManager();
 final KeyEventManager keyEventManager = new KeyEventManager();
 
 private final boolean isDebug = true;
-PFont defaultFont;
-PFont monoFont;
+PFont FontDefault;
+PFont FontMono;
 //各種イベントの伝播
 void setup() {
   frameRate(FRAME_RATE);
-  defaultFont = loadFont("DotGothic16-Regular-48.vlw");
-  monoFont = loadFont("UDEVGothic-Regular-48.vlw");
-  textFont(defaultFont, 32);
+  FontDefault = loadFont("DotGothic16-Regular-48.vlw");
+  FontMono = loadFont("UDEVGothic-Regular-48.vlw");
+  textFont(FontDefault, 32);
   screen.applySize();
   sceneManager.registerScenes(new HashMap<String, Scene>() {
     {
       put("title", new TitleScene());
     }
-  }
-  );
+  });
   sceneManager.changeOneshot(new TestScene());
   //sceneManager.change("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
