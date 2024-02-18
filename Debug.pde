@@ -28,11 +28,17 @@ void debugDraw() {
 }
 
 void markPoint(PVector point,color crossColor){
+  markPoint(point,crossColor,true);
+}
+
+void markPoint(PVector point,color crossColor,boolean withText){
   stroke(crossColor);
   line(point.x-10, point.y, point.x+10, point.y);
   line(point.x, point.y-10, point.x, point.y+10);
-  textAlign(CENTER, CENTER);
-  text("("+point.x+","+point.y+")", point.x, point.y-20);
+  if(withText){
+    textAlign(CENTER, CENTER);
+    text("("+point.x+","+point.y+")", point.x, point.y-20);
+  }
 }
 
 

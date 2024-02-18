@@ -1,3 +1,4 @@
+/*
 final class TestScene extends Scene {
   final Area gameArea = new Area(this, new Rect(0, 0, screen.getWidth(), screen.getHeight()), #000000);
   final NewBall ball = new NewBall(gameArea, BallSize.pos(gameArea.centerX()-150, gameArea.centerY()-70), gameArea);
@@ -77,3 +78,4 @@ final class Wall extends GameObject {
   }
 }
 //
+*/

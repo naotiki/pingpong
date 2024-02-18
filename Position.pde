@@ -65,6 +65,9 @@ static class Rect {
   PVector getPosVec() {
     return new PVector(x, y);
   }
+  PVectorD getPosVecD() {
+    return new PVectorD(x, y);
+  }
 
   //コピーして位置を変更
   Rect pos(float x, float y) {
