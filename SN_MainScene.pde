@@ -63,7 +63,7 @@ final class MainScene extends Scene {
   void checkItem(){
     for(int i=0;i<items.size();i++){
       Item item=items.get(i);
-      if(item.rect.intersects(player.rect)){
+      /* if(item.rect.intersects(player.rect)){
         item.effect(player);
         items.remove(i);
         i--;
@@ -72,7 +72,7 @@ final class MainScene extends Scene {
         item.effect(player2);
         items.remove(i);
         i--;
-      }
+      } */
     } 
   }
   void mainGameUpdate(){

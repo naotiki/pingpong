@@ -35,7 +35,7 @@ abstract class GameObject {
     return rect.intersects(other.rect);
   }
   void destroy() {
-    parent.removeChild(this);
+    //parent.removeChild(this);
   }
 }
 
