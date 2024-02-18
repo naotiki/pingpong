@@ -2,12 +2,13 @@ import java.awt.event.KeyEvent;
 
 //キーイベントをいい感じにこねこねするクラス
 final class KeyEventManager {
-  //unused?
-  static final int KEY_PRESS = 0b001;
-  static final int KEY_HOLD = 0b010;
-  static final int KEY_RELEASE = 0b100;
+
 
   private Map<Integer, Character> keys = new HashMap<>();
+  private List<KeyEventListener> listeners = new ArrayList<KeyEventListener>();
+  void addKeyEventListener(KeyEventListener listener){
+    listeners.add(listener);
+  }
   KeyEventManager() {
   }
 
@@ -16,6 +17,7 @@ final class KeyEventManager {
       return;//Hold
     }
     keys.put(keyCode, key);//Press
+    listeners.forEach(l->l.onKeyEvent(KeyEventType.Pressed,keyCode,key));
   }
 
   boolean isPressKeyCode(int keyCode) {
@@ -28,5 +30,15 @@ final class KeyEventManager {
   void keyReleased() {
     //Release
     keys.remove(keyCode);
+    listeners.forEach(l->l.onKeyEvent(KeyEventType.Released,keyCode,key));
   }
+}
+
+  enum KeyEventType{
+    Pressed,
+    Hold,
+    Released,
+  }
+interface KeyEventListener {
+  void onKeyEvent(KeyEventType type,int keyCode,char key);
 }

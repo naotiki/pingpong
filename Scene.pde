@@ -4,6 +4,8 @@ import java.util.stream.Collectors;
 import java.util.Collections;
 
 abstract class Scene implements IGameObjectTree {
+  //マウスのホバー・クリックを管理する人
+  //PointerbleなGOが重なっている場合上に描画されているGOにのみイベントを送信する。
   final class MouseEventManager {
     private List<Pointerble> gameObjects = new ArrayList<Pointerble>();
     MouseEventManager() {
@@ -64,10 +66,7 @@ abstract class Scene implements IGameObjectTree {
     return gameObjects;
   }
 
-  void sceneSetup() {
-  }
-  void sceneUpdate() {
-  }
+
   final void setup() {
     println("Start:main Setup");
     sceneSetup();
@@ -78,12 +77,14 @@ abstract class Scene implements IGameObjectTree {
     standbyGameObjects.clear();
     println("End:main Setup");
   }
-
+  
+  //再帰で全部描画
   final void setupAll(List<GameObject> children) {
     children.forEach( (g) -> {
       println("Start:"+g.getClass().getSimpleName()+" Setup");
       if (!g.enabled) return;
       g.setup();
+      //子がいるなら
       if (g instanceof IGameObjectTree) {
         println(g.getClass().getSimpleName()+" has children");
         setupAll(((IGameObjectTree)g).getChildren() );
@@ -91,10 +92,12 @@ abstract class Scene implements IGameObjectTree {
     }
     );
   }
+  //再帰で全部描画
   final void drawAll(List<GameObject> children) {
     children.forEach( (g) -> {
       if (!g.enabled) return;
       g.draw();
+      //子がいるなら
       if (g instanceof IGameObjectTree) {
         drawAll(((IGameObjectTree)g).getChildren() );
       }
@@ -103,20 +106,23 @@ abstract class Scene implements IGameObjectTree {
   }
 
   final void update() {
-
-
-
     sceneUpdate();
+    //forEach中にGOが追加されると例外が発生するため追加を一時停止する。
     isLockedGameObjects = true;
-
     mouseEventManager.update();
-
     drawAll(getChildren());
     isLockedGameObjects = false;
+    //追加待ちのGOを一括追加
     gameObjects.addAll(standbyGameObjects);
     standbyGameObjects.clear();
   }
-
+  
+  //オーバーライドしてSceneごとのSetupを実行
+  void sceneSetup() {
+  }
+  //オーバーライドしてSceneごとのUpdateを実行
+  void sceneUpdate() {
+  }
   // Deprected, Use "KeyEventManager"
   void keyPressed() {
   }

@@ -16,12 +16,15 @@ class SceneManager {
   String getActiveSceneId() {
     return activeSceneId;
   }
+
+  //SceneのIDを取得
   String getIdFromScene(Scene scene) {
     for (Map.Entry<String, Scene> entry : allScenes.entrySet()) {
       if (entry.getValue().equals(scene)) {
         return entry.getKey();
       }
     }
+    //
     return "_null";
   }
   Scene getSceneById(String id) {
@@ -48,7 +51,7 @@ class SceneManager {
     change(sceneId, getSceneById(sceneId));
   }
   void changeOneshot(Scene scene) {
-    var id = "__"+scene.getClass().getSimpleName();
+    String id = "__"+scene.getClass().getSimpleName();
     println("Oneshot Loading "+id);
     change(id, scene);
   }
