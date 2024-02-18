@@ -12,14 +12,20 @@ final class Paddle extends GameObject {
     rect(rect.x, rect.y, rect.w, rect.h);
   }
 
-  void up(Area area) {
-    if (rect.y > area.rect.y) {
+  void up(Rect area) {
+    if (rect.y > area.y) {
       rect.y -= 10*UNIT;
     }
+     yPosWithin(area);
   }
-  void down(Area area) {
-    if (rect.bottom() < area.rect.bottom()) {
+  void down(Rect area) {
+    if (rect.bottom() < area.bottom()) {
       rect.y += 10*UNIT;
     }
+    yPosWithin(area);
+  }
+
+  void yPosWithin(Rect area){
+    rect.y = rect.y < area.y ? area.y : rect.bottom() > area.bottom() ? area.bottom()-rect.h : rect.y; 
   }
 }

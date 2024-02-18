@@ -1,6 +1,5 @@
 final class Area extends Pointerble implements IGameObjectTree {
   color bgColor;
-  boolean noColor;
   List<GameObject> children = new ArrayList<GameObject>();
   void addChild(GameObject child) {
     children.add(child);
@@ -17,7 +16,7 @@ final class Area extends Pointerble implements IGameObjectTree {
     this(scene, rect, scene, bgColor);
   }
   void draw() {
-    if(bgColor<0){
+    if(bgColor==NO_COLOR){
       noFill();
     } else{
       fill(bgColor);

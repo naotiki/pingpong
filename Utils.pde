@@ -3,9 +3,9 @@ void autoMan(Area area, Paddle player, Ball ball) {
   Rect playerRect=player.rect;
   Rect ballRect=ball.rect;
   if (ballRect.centerY()<playerRect.centerY()) {
-    player.up(area);
+    player.up(area.rect);
   } else if (ballRect.centerY()>playerRect.centerY()) {
-    player.down(area);
+    player.down(area.rect);
   }
 }
 
@@ -16,3 +16,5 @@ boolean isParentsEnabled(GameObject go) {
     return go.enabled;
   }
 }
+
+

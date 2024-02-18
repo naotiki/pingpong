@@ -7,7 +7,7 @@ final class TestScene2 extends Scene {
   double wallAngleBase() {
     return ((Float)random(radians(5), radians(85))).doubleValue();
   }
-  void sceneSetup() {
+  void setup() {
     menuButton.setOnClickListener(()-> {
       sceneManager.changeOneshot(new TestScene2());
     }
@@ -24,7 +24,7 @@ final class TestScene2 extends Scene {
       walls.add(w);
     } 
   }
-  void sceneUpdate() {
+  void update() {
     //delay(250);
     println("update");
     while(true){

@@ -37,7 +37,7 @@ abstract class Scene implements IGameObjectTree {
           g.isMouseHover = true;
         }
         );
-      } else if (!mousePressed&&clickingGameObject!=null) {
+      }else if (!mousePressed&&clickingGameObject!=null) {
         if (clickingGameObject instanceof Clickable) {
           ((Clickable)clickingGameObject).onClicked();
           ((Clickable)clickingGameObject).isMouseClick = false;
@@ -53,6 +53,7 @@ abstract class Scene implements IGameObjectTree {
   }
   private List<GameObject> gameObjects = new ArrayList<GameObject>();
   private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
+  private List<GameObject> removeGameObjects = new ArrayList<GameObject>();
   private boolean isLockedGameObjects = false;
   final void addChild(GameObject go) {
     if (isLockedGameObjects) {
@@ -61,15 +62,22 @@ abstract class Scene implements IGameObjectTree {
       gameObjects.add(go);
     }
   }
+  final void removeChild(GameObject go) {
+    if (isLockedGameObjects) {
+      removeGameObjects.add(go);
+    } else {
+      gameObjects.remove(go);
+    }
+  }
 
   final List<GameObject> getChildren() {
     return gameObjects;
   }
 
 
-  final void setup() {
+  final void sceneSetup() {
     println("Start:main Setup");
-    sceneSetup();
+    setup();
     isLockedGameObjects = true;
     setupAll(getChildren());
     isLockedGameObjects = false;
@@ -96,7 +104,7 @@ abstract class Scene implements IGameObjectTree {
   final void drawAll(List<GameObject> children) {
     children.forEach( (g) -> {
       if (!g.enabled) return;
-      g.draw();
+      g.drawSelf();
       //子がいるなら
       if (g instanceof IGameObjectTree) {
         drawAll(((IGameObjectTree)g).getChildren() );
@@ -105,8 +113,8 @@ abstract class Scene implements IGameObjectTree {
     );
   }
 
-  final void update() {
-    sceneUpdate();
+  final void sceneUpdate() {
+    update();
     //forEach中にGOが追加されると例外が発生するため追加を一時停止する。
     isLockedGameObjects = true;
     mouseEventManager.update();
@@ -118,15 +126,16 @@ abstract class Scene implements IGameObjectTree {
   }
   
   //オーバーライドしてSceneごとのSetupを実行
-  void sceneSetup() {
+  void setup() {
   }
   //オーバーライドしてSceneごとのUpdateを実行
-  void sceneUpdate() {
+  void update() {
   }
-  // Deprected, Use "KeyEventManager"
+  // 非推奨, 代わり → "KeyEventManager"
   void keyPressed() {
   }
-  // Sceneを離れるとき すべてを破壊してきれいにする
+  // Sceneを離れるとき すべてを破壊してきれいにする。(クリーンアップ)
+  // 本来、オンライン対戦の実装に使用する予定だったが使用することはなかった。
   void destroy() {
   };
 }

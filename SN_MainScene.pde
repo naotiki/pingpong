@@ -23,18 +23,22 @@ final class MainScene extends Scene {
   final Button titleButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0, 0, 300, 50), Anchor.MiddleCenter), this, "タイトルに戻る");
   final Button menuCancelButton = new Button(overRayArea, overRayArea.posByAnchor(new Rect(0, 80, 300, 50), Anchor.MiddleCenter), this, "閉じる");
 
-  public MainScene() {
-  }
-  void sceneSetup() {
+  final List<Item> items = new ArrayList<Item>();
+
+  boolean isMainGameUpdateEnabled = true;
+
+  void setup() {
     overRayArea.enabled=false;
     menuButton.setOnClickListener(()-> {
       overRayArea.enabled=true;
       gameArea.enabled=false;
+      isMainGameUpdateEnabled = false;
     }
     );
     menuCancelButton.setOnClickListener(()-> {
       overRayArea.enabled=false;
       gameArea.enabled=true;
+      isMainGameUpdateEnabled = true;
     }
     );
     restartButton.setOnClickListener(()-> {
@@ -46,7 +50,37 @@ final class MainScene extends Scene {
     }
     );
   }
-  void sceneUpdate() {
+  void update() {
+    if (isMainGameUpdateEnabled) {
+      mainGameUpdate();
+    }
+  }
+  void itemSpawn(){
+    Item i=new Item(gameArea, gameArea.posByAnchor(new Rect(random(-gameArea.rect.w*0.2, gameArea.rect.w*0.2), random(-gameArea.rect.h*0.2, gameArea.rect.h*0.2), 50, 50), Anchor.MiddleCenter),ItemType.randomType());
+    i.setup();
+    items.add(i);
+  }
+  void checkItem(){
+    for(int i=0;i<items.size();i++){
+      Item item=items.get(i);
+      if(item.rect.intersects(player.rect)){
+        item.effect(player);
+        items.remove(i);
+        i--;
+      }
+      if(item.rect.intersects(player2.rect)){
+        item.effect(player2);
+        items.remove(i);
+        i--;
+      }
+    } 
+  }
+  void mainGameUpdate(){
+    if(frameCount%(FRAME_RATE*round(random(10,30)))==0){
+      itemSpawn();
+    }
+    checkItem();
+
     //プレイヤーの反射処理
     Rect ballRect= ball.rect;
     Rect playerRect = player.rect;
@@ -82,20 +116,22 @@ final class MainScene extends Scene {
 
     // 移動処理
     if (keyEventManager.isPressKey('w')) {
-      player.up(gameArea);
+      player.up(gameArea.rect);
     }
     if (keyEventManager.isPressKey('s')) {
-      player.down(gameArea);
+      player.down(gameArea.rect);
     }
     if (keyEventManager.isPressKeyCode(UP)) {
-      player2.up(gameArea);
+      player2.up(gameArea.rect);
     }
     if (keyEventManager.isPressKeyCode(DOWN)) {
-      player2.down(gameArea);
+      player2.down(gameArea.rect);
     }
 
     //autoMan(gameArea,player,ball);
     autoMan(gameArea, player2, ball);
+
+    
   }
 
   void keyPressed() {

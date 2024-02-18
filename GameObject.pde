@@ -20,11 +20,23 @@ abstract class GameObject {
 
   // 描画は各自で実装
   abstract void draw();
-
-  // 衝突判定 // これいる？
-  /* boolean isCollision(GameObject target) {
-   return (x < target.x + target.width && x + width > target.x) && (y < target.y + target.height && y + height > target.y) ;
-   } */
+  final void drawSelf() {
+    resetDraw();
+    draw();
+  }
+  // 他のGOの影響を受けないようにする
+  private void resetDraw(){
+    fill(255);
+    strokeWeight(1);
+    noStroke();
+    noTint();
+  }
+  boolean isCollision(GameObject other) {
+    return rect.intersects(other.rect);
+  }
+  void destroy() {
+    parent.removeChild(this);
+  }
 }
 
 

@@ -1,4 +1,5 @@
 import java.lang.Math;
+// Physics.pde の double版実装。
 final double errorD = Math.toRadians(0.1);
 private PVectorD calcCrossPointD(PVectorD object, PVectorD velocity, PVectorD target, PVectorD vector){
   Double tan1 = velocity.tan();

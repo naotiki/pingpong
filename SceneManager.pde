@@ -42,7 +42,7 @@ class SceneManager {
     activeScene = scene;
     //旧Sceneの参照が外れるのでGCの実行を提案
     System.gc();
-    activeScene.setup();
+    activeScene.sceneSetup();
     activeSceneId = sceneId;
   }
 

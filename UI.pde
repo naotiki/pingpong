@@ -44,6 +44,10 @@ final class Button extends Clickable implements IGameObjectTree {
   }
 }
 
+interface OnClickListner {
+  void onClicked();
+}
+
 final class Text extends GameObject {
   private static final int TEXTSIZE_DEFAULT = 32;
   private static final color TEXTCOLOR_DEFAULT = #000000;
@@ -71,6 +75,4 @@ final class Text extends GameObject {
   }
 }
 
-interface OnClickListner {
-  void onClicked();
-}
+

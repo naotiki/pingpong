@@ -4,7 +4,11 @@ final class Ball extends GameObject {
 
   //速度ベクトル Defaultではランダム
   PVector velocityVec = randomAngleVec().setMag(speed);
-
+  Area area;
+  Ball(IGameObjectTree scene, Rect rect, Area area) {
+    super(scene, rect);
+    this.area = area;
+  }
   PVector randomAngleVec() {
     float radian = random(radians(45), radians(60) )+round(random(3))*HALF_PI;
     return PVector.fromAngle(radian);
@@ -20,11 +24,7 @@ final class Ball extends GameObject {
     // 正規化した速度の逆向き * -0.1
     return new PVector().set(velocityVec).normalize().mult(-0.1);
   }
-  Area area;
-  Ball(IGameObjectTree scene, Rect rect, Area area) {
-    super(scene, rect);
-    this.area = area;
-  }
+
 
 
   void setup() {

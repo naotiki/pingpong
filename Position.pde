@@ -94,6 +94,9 @@ static class Rect {
   boolean isPointWithIn(float x, float y) {
     return x >= left() && x <= right() && y >= top() && y <= bottom();
   }
+  boolean intersects(Rect rect) {
+    return left() < rect.right() && right() > rect.left() && top() < rect.bottom() && bottom() > rect.top();
+  }
 }
 
 static class ScreenManager {

@@ -22,7 +22,8 @@ void setup() {
       put("title", new TitleScene());
     }
   });
-  sceneManager.changeOneshot(new TestScene2());
+  sceneManager.change("title");
+  sceneManager.changeOneshot(new MainScene());
   //sceneManager.change("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
   if (isDebug) {
@@ -37,7 +38,7 @@ void draw() {
   if(isStopDraw) return;
 
   background(0);
-  sceneManager.activeScene.update();
+  sceneManager.activeScene.sceneUpdate();
 
 
   if (isDebug) {
