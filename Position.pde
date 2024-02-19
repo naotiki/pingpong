@@ -9,8 +9,8 @@ enum Anchor {
     BottomLeft(0, 1),
     BottomCenter(0.5, 1),
     BottomRight(1, 1);
-  private float x;
-  private float y;
+  final float x;
+  final float y;
 
   private Anchor(float x, float y) {
     this.x = x;

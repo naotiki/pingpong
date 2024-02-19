@@ -1,3 +1,5 @@
+
+// textをいい感じに配置するクラス
 static class UIBuilder {
   final Rect pos;
   final int textSize;

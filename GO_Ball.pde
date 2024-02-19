@@ -3,7 +3,7 @@ final class Ball extends GameObject {
   static final color DEFAULT_TINTCOLOR = #ffffff;
 
   //速度ベクトル Defaultではランダム
-  PVector velocityVec = randomAngleVec().setMag(speed);
+  PVector velocity = randomAngleVec().setMag(speed);
   Area area;
   Ball(GameObjectTree scene, Rect rect, Area area) {
     super(scene, rect);
@@ -22,7 +22,7 @@ final class Ball extends GameObject {
   // Effectの方向ベクトル
   PVector getEffectVec() {
     // 正規化した速度の逆向き * -0.1
-    return new PVector().set(velocityVec).normalize().mult(-0.1);
+    return new PVector().set(velocity).normalize().mult(-0.1);
   }
 
 
@@ -38,15 +38,15 @@ final class Ball extends GameObject {
     fill(255);
     noStroke();
     Rect areaRect = area.rect;
-    if ((rect.x < areaRect.x && velocityVec.x < 0) || (rect.x+rect.w > areaRect.x + areaRect.w && velocityVec.x > 0)) {
-      velocityVec.x*=-1;
+    if ((rect.x < areaRect.x && velocity.x < 0) || (rect.x+rect.w > areaRect.x + areaRect.w && velocity.x > 0)) {
+      velocity.x*=-1;
     }
-    if ((rect.y < areaRect.y && velocityVec.y < 0) || (rect.y+rect.h > areaRect.y + areaRect.h  && velocityVec.y > 0)) {
-      velocityVec.y*=-1;
+    if ((rect.y < areaRect.y && velocity.y < 0) || (rect.y+rect.h > areaRect.y + areaRect.h  && velocity.y > 0)) {
+      velocity.y*=-1;
     }
 
-    rect.x+=velocityVec.x;
-    rect.y+=velocityVec.y;
+    rect.x+=velocity.x;
+    rect.y+=velocity.y;
     ps.origin.set(rect.centerX(), rect.centerY());
     ps.applyForce(getEffectVec());
     ps.run();
@@ -59,7 +59,7 @@ final class Ball extends GameObject {
     ps.tintColor = DEFAULT_TINTCOLOR;
     rect.x = screen.centerX();
     rect.y = screen.centerY();
-    velocityVec = randomAngleVec().setMag(speed);
+    velocity = randomAngleVec().setMag(speed);
     ps.origin.set(rect.centerX(), rect.centerY());
     ps.init();
   }

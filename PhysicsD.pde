@@ -1,6 +1,10 @@
+// Physics.pde の double版実装。精度が高い・・はず
 import java.lang.Math;
-// Physics.pde の double版実装。
+
+//許容誤差
 final double errorD = Math.toRadians(0.1);
+
+//交点計算
 private PVectorD calcCrossPointD(PVectorD object, PVectorD velocity, PVectorD target, PVectorD vector) {
   Double tan1 = velocity.tan();
   Double tan2 = vector.tan();//vector.heading()
@@ -54,11 +58,10 @@ PVectorD calcCircleCenterOnCollisionD(PVectorD object, PVectorD velocity, PVecto
   double angle=angle1-angle0;
   if (Math.abs(angle)<errorD) return null;
   PVectorD crossPos = calcCrossPointD(object, velocity, target, vector);
-  //衝突時の円の中心と交点のずれ dx,dy
+  //衝突時の円の中心と交点のずれ addX,addY
   double addX = (radius*Math.cos(angle0+Math.PI))/Math.sin(angle0-angle1);
   double addY = (radius*Math.sin(angle0+Math.PI))/Math.sin(angle0-angle1);
   PVectorD diff=PVectorD.sub(object, crossPos);
-  //候補
   double xSign=Math.signum(diff.x*addX);
   double ySign=Math.signum(diff.y*addY);
   PVectorD centerPos =  crossPos.copy().add(addX*xSign, addY*ySign);

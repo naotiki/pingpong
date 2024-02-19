@@ -1,4 +1,6 @@
 import java.lang.Math;
+// PVectorのDouble型実装
+// 使い方はPVectorと同じ
 static class PVectorD {
   double x;
   double y;
