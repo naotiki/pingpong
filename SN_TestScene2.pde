@@ -96,7 +96,7 @@ final class NewBall extends GameObject {
     return velocity.copy().normalize().mult(-0.1).toFloat();
   }
   Area area;
-  NewBall(IGameObjectTree scene, Rect rect, Area area) {
+  NewBall(GameObjectTree scene, Rect rect, Area area) {
     super(scene, rect);
     this.area = area;
   }
@@ -145,7 +145,7 @@ final class NewBall extends GameObject {
 }
 final class Wall extends GameObject {
   PVectorD vec;
-  Wall(IGameObjectTree scene, Rect rect, double radian, double length) {
+  Wall(GameObjectTree scene, Rect rect, double radian, double length) {
     super(scene, rect);
     vec = PVectorD.fromAngle(radian).setMag(length);
   }

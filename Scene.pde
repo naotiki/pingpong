@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.Collections;
 
-abstract class Scene implements IGameObjectTree {
+abstract class Scene extends GameObjectTree {
   //マウスのホバー・クリックを管理する人
   //PointerbleなGOが重なっている場合上に描画されているGOにのみイベントを送信する。
   final class MouseEventManager {
@@ -47,67 +47,42 @@ abstract class Scene implements IGameObjectTree {
       }
     }
   }
+
   final MouseEventManager mouseEventManager = new MouseEventManager();
   void add(Pointerble p) {
     mouseEventManager.add(p);
   }
-  private List<GameObject> gameObjects = new ArrayList<GameObject>();
-  private List<GameObject> standbyGameObjects = new ArrayList<GameObject>();
-  private List<GameObject> removeGameObjects = new ArrayList<GameObject>();
-  private boolean isLockedGameObjects = false;
-  final void addChild(GameObject go) {
-    if (isLockedGameObjects) {
-      standbyGameObjects.add(go);
-    } else {
-      gameObjects.add(go);
-    }
-  }
-  final void removeChild(GameObject go) {
-    if (isLockedGameObjects) {
-      removeGameObjects.add(go);
-    } else {
-      gameObjects.remove(go);
-    }
-  }
 
-  final List<GameObject> getChildren() {
-    return gameObjects;
-  }
-
-
+  final Timer timer = new Timer();
   final void sceneSetup() {
     println("Start:main Setup");
     setup();
-    isLockedGameObjects = true;
-    setupAll(getChildren());
-    isLockedGameObjects = false;
-    gameObjects.addAll(standbyGameObjects);
-    standbyGameObjects.clear();
+    setupAll(this);
     println("End:main Setup");
   }
   
   //再帰で全部描画
-  final void setupAll(List<GameObject> children) {
-    children.forEach( (g) -> {
+  final void setupAll(GameObjectTree gameObjectTree) {
+    gameObjectTree.childForEach( g -> {
       println("Start:"+g.getClass().getSimpleName()+" Setup");
       if (!g.enabled) return;
       g.setup();
       //子がいるなら
-      if (g instanceof IGameObjectTree) {
+      if (g.hasChildren()) {
         println(g.getClass().getSimpleName()+" has children");
-        setupAll(((IGameObjectTree)g).getChildren() );
+        setupAll(g);
       }
     }
     );
   }
   //再帰で全部描画
-  final void drawAll(List<GameObject> children) {
-    children.forEach( (g) -> {
+  final void drawAll(GameObjectTree gameObjectTree) {
+    gameObjectTree.childForEach( g -> {
       if (!g.enabled) return;
       g.drawSelf();
       //子がいるなら
-      if (g instanceof IGameObjectTree) {
-        drawAll(((IGameObjectTree)g).getChildren() );
+      if (g.hasChildren()) {
+        drawAll(g);
       }
     }
     );
@@ -115,16 +90,15 @@ abstract class Scene implements IGameObjectTree {
 
   final void sceneUpdate() {
     update();
+    timer.update();
     //forEach中にGOが追加されると例外が発生するため追加を一時停止する。
-    isLockedGameObjects = true;
     mouseEventManager.update();
-    drawAll(getChildren());
-    isLockedGameObjects = false;
-    //追加待ちのGOを一括追加
-    gameObjects.addAll(standbyGameObjects);
-    standbyGameObjects.clear();
+    drawAll(this);
   }
-  
+  void sceneDestroy() {
+    timer.clear();
+    destroy();
+  }
   //オーバーライドしてSceneごとのSetupを実行
   void setup() {
   }

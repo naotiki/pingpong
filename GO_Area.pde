@@ -1,14 +1,7 @@
-final class Area extends Pointerble implements IGameObjectTree {
+final class Area extends Pointerble {
   color bgColor;
-  List<GameObject> children = new ArrayList<GameObject>();
-  void addChild(GameObject child) {
-    children.add(child);
-  }
-  List<GameObject> getChildren() {
-    return children;
-  }
 
-  Area(IGameObjectTree parent, Rect rect, Scene scene, color bgColor) {
+  Area(GameObjectTree parent, Rect rect, Scene scene, color bgColor) {
     super(parent, rect, scene);
     this.bgColor = bgColor;
   }

@@ -2,6 +2,7 @@ static enum ItemType{
   AddBall("item_addball.png"),
   Expand("item_expand.png"),
   Wall("item_wall.png");
+  
   ItemType(String imageName){
     this.imageName = imageName;
   }
@@ -13,7 +14,7 @@ static enum ItemType{
 
 class Item extends GameObject {
   ItemType type;
-  Item(IGameObjectTree parent,Rect rect,ItemType type){
+  Item(GameObjectTree parent,Rect rect,ItemType type){
     super(parent,rect);
     this.type = type;
   }

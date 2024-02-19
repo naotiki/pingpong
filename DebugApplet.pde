@@ -19,17 +19,17 @@ public class DebugApplet extends PApplet {
       u.text("--- GameObjects ---");
       Scene scene = sceneManager.getActiveScene();
       /*  */
-      drawTree(u, ((List<GameObject>)((ArrayList<GameObject>)scene.getChildren()).clone()));
+      drawTree(u, scene);
     }
     );
   }
-  void drawTree(UIBuilder u, List<GameObject> list) {
-    list.forEach(g-> {
+  void drawTree(UIBuilder u, GameObjectTree gameObjectTree) {
+    gameObjectTree.childForEach(g-> {
       String str = String.format("(%5.1f, %5.1f)", g.rect.x, g.rect.y);
       u.text((g.enabled ? "o" : "x")+" "+g.getClass().getSimpleName()+" "+str);
-      if (g instanceof IGameObjectTree) {
+      if (g.hasChildren()) {
         u.indent();
-        drawTree(u, ((IGameObjectTree)g).getChildren() );
+        drawTree(u, g);
         u.unindent();
       }
     }

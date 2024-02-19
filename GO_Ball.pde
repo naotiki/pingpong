@@ -5,7 +5,7 @@ final class Ball extends GameObject {
   //速度ベクトル Defaultではランダム
   PVector velocityVec = randomAngleVec().setMag(speed);
   Area area;
-  Ball(IGameObjectTree scene, Rect rect, Area area) {
+  Ball(GameObjectTree scene, Rect rect, Area area) {
     super(scene, rect);
     this.area = area;
   }

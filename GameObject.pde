@@ -1,5 +1,5 @@
 // 座標と幅、高さを持つ基底クラス
-abstract class GameObject {
+abstract class GameObject extends GameObjectTree {
 
   //値はすべて絶対値 左上(0,0)
   Rect rect;
@@ -7,8 +7,8 @@ abstract class GameObject {
   public final Scene getActiveScene() {
     return sceneManager.activeScene;
   }
-  final IGameObjectTree parent;
-  GameObject(IGameObjectTree parent, Rect rect) {
+  final GameObjectTree parent;
+  GameObject(GameObjectTree parent, Rect rect) {
     this.rect=rect;
     this.parent=parent;
     //一般的に良くないとされている"this"のリークは気にしない
@@ -35,7 +35,7 @@ abstract class GameObject {
     return rect.intersects(other.rect);
   }
   void destroy() {
-    //parent.removeChild(this);
+    parent.removeChild(this);
   }
 }
 
@@ -52,14 +52,14 @@ abstract class GameObject {
  }
  */
 abstract class Pointerble extends GameObject {
-  Pointerble(IGameObjectTree parent, Rect rect, Scene scene) {
+  Pointerble(GameObjectTree parent, Rect rect, Scene scene) {
     super(parent, rect);
     scene.add(this);
   }
   boolean isMouseHover =false;
 }
 abstract class Clickable extends Pointerble {
-  Clickable(IGameObjectTree parent, Rect rect, Scene scene) {
+  Clickable(GameObjectTree parent, Rect rect, Scene scene) {
     super(parent, rect, scene);
   }
   boolean isMouseClick =false;

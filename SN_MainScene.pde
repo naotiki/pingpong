@@ -25,7 +25,8 @@ final class MainScene extends Scene {
 
   final List<Item> items = new ArrayList<Item>();
 
-  boolean isMainGameUpdateEnabled = true;
+  private boolean isMainGameUpdateEnabled = true;
+  Paddle playerHasBall = null; 
 
   void setup() {
     overRayArea.enabled=false;
@@ -63,20 +64,32 @@ final class MainScene extends Scene {
   void checkItem(){
     for(int i=0;i<items.size();i++){
       Item item=items.get(i);
-      /* if(item.rect.intersects(player.rect)){
-        item.effect(player);
+      if(item.rect.intersects(ball.rect)){
+
+        switch (item.type) {
+          case AddBall:
+
+          break;
+          case Expand:
+
+          break;
+          case Wall:
+            playerHasBall.rect.h+=50;
+            Paddle p=playerHasBall;
+            timer.setTimeout(10000,()->{
+              p.rect.h-=50;
+              p.yPosWithin(gameArea.rect);
+            });
+          break;
+        }
+
+        item.destroy();
         items.remove(i);
-        i--;
-      }
-      if(item.rect.intersects(player2.rect)){
-        item.effect(player2);
-        items.remove(i);
-        i--;
-      } */
+      } 
     } 
   }
   void mainGameUpdate(){
-    if(frameCount%(FRAME_RATE*round(random(10,30)))==0){
+    if(frameCount%(FRAME_RATE*round(random(20,25)))==0 && items.size()<3){
       itemSpawn();
     }
     checkItem();
@@ -90,16 +103,18 @@ final class MainScene extends Scene {
       && ballRect.right() > playerRect.right()
       && ballRect.bottom() > playerRect.top() && ballRect.top() < playerRect.bottom()
       ) {
-      ball.setParticleColor(playerColor);
-      ball.velocityVec.x *=-1;
+        playerHasBall=player;
+        ball.setParticleColor(playerColor);
+        ball.velocityVec.x *=-1;
     }
     if (
       ballRect.right() > player2Rect.left() && ball.velocityVec.x > 0
       && ballRect.left() < player2Rect.left()
       && ballRect.bottom() > player2Rect.top() && ballRect.top() < player2Rect.bottom()
       ) {
-      ball.setParticleColor(player2Color);
-      ball.velocityVec.x *=-1;
+        playerHasBall=player2;
+        ball.setParticleColor(player2Color);
+        ball.velocityVec.x *=-1;
     }
 
     if (ballRect.right() > gameArea.rect.right()) {
