@@ -21,7 +21,8 @@ void setup() {
     {
       put("title", new TitleScene());
     }
-  });
+  }
+  );
   sceneManager.change("title");
   sceneManager.changeOneshot(new MainScene());
   //sceneManager.change("main");
@@ -31,11 +32,11 @@ void setup() {
   }
 }
 boolean isStopDraw=false;
-void pauseDraw(){
+void pauseDraw() {
   isStopDraw=true;
 }
 void draw() {
-  if(isStopDraw) return;
+  if (isStopDraw) return;
 
   background(0);
   sceneManager.activeScene.sceneUpdate();
@@ -54,4 +55,3 @@ void keyPressed() {
 void keyReleased() {
   keyEventManager.keyReleased();
 }
-

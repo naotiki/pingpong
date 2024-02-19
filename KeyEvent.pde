@@ -6,7 +6,7 @@ final class KeyEventManager {
 
   private Map<Integer, Character> keys = new HashMap<>();
   private List<KeyEventListener> listeners = new ArrayList<KeyEventListener>();
-  void addKeyEventListener(KeyEventListener listener){
+  void addKeyEventListener(KeyEventListener listener) {
     listeners.add(listener);
   }
   KeyEventManager() {
@@ -17,7 +17,7 @@ final class KeyEventManager {
       return;//Hold
     }
     keys.put(keyCode, key);//Press
-    listeners.forEach(l->l.onKeyEvent(KeyEventType.Pressed,keyCode,key));
+    listeners.forEach(l->l.onKeyEvent(KeyEventType.Pressed, keyCode, key));
   }
 
   boolean isPressKeyCode(int keyCode) {
@@ -30,15 +30,15 @@ final class KeyEventManager {
   void keyReleased() {
     //Release
     keys.remove(keyCode);
-    listeners.forEach(l->l.onKeyEvent(KeyEventType.Released,keyCode,key));
+    listeners.forEach(l->l.onKeyEvent(KeyEventType.Released, keyCode, key));
   }
 }
 
-  enum KeyEventType{
-    Pressed,
+enum KeyEventType {
+  Pressed,
     Hold,
     Released,
-  }
+}
 interface KeyEventListener {
-  void onKeyEvent(KeyEventType type,int keyCode,char key);
+  void onKeyEvent(KeyEventType type, int keyCode, char key);
 }

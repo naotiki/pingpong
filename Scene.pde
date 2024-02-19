@@ -37,7 +37,7 @@ abstract class Scene extends GameObjectTree {
           g.isMouseHover = true;
         }
         );
-      }else if (!mousePressed&&clickingGameObject!=null) {
+      } else if (!mousePressed&&clickingGameObject!=null) {
         if (clickingGameObject instanceof Clickable) {
           ((Clickable)clickingGameObject).onClicked();
           ((Clickable)clickingGameObject).isMouseClick = false;
@@ -60,7 +60,7 @@ abstract class Scene extends GameObjectTree {
     setupAll(this);
     println("End:main Setup");
   }
-  
+
   //再帰で全部描画
   final void setupAll(GameObjectTree gameObjectTree) {
     gameObjectTree.childForEach( g -> {

@@ -34,7 +34,6 @@ final class Button extends Clickable {
   void onClicked() {
     if (listener!=null) listener.onClicked();
   }
-
 }
 
 interface OnClickListner {
@@ -67,5 +66,3 @@ final class Text extends GameObject {
     }
   }
 }
-
-

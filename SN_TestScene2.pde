@@ -17,59 +17,59 @@ final class TestScene2 extends Scene {
     walls.add(w);
     for (int i = 0; w.rect.x+w.vec.x < screen.width; ++i) {
       double sign=i%2==0?1:-1;
-      if(sign==-1){
+      if (sign==-1) {
         angle= wallAngleBase();
       }
-      w = new Wall(gameArea, new Rect(w.rect.x+w.vec.toFloat().x,w.rect.y+w.vec.toFloat().y,0,0), sign*angle, 100);
+      w = new Wall(gameArea, new Rect(w.rect.x+w.vec.toFloat().x, w.rect.y+w.vec.toFloat().y, 0, 0), sign*angle, 100);
       walls.add(w);
-    } 
+    }
   }
   void update() {
     //delay(250);
     println("update");
-    while(true){
-    PVectorD ballCenter=new PVectorD(ball.rect.centerX(),ball.rect.centerY());
-    PVectorD newPos =  null;
-    Double nearestDistanse = null;
-    Wall hitWall=null;
-    /*/*  */ for (int i = 0; i < walls.size(); i++) {
-      Wall w = walls.get(i);
-      
-      PVectorD pos = calcCircleCenterOnCollisionD(
-        ballCenter,
-        ball.velocity,w.rect.getPosVecD(),w.vec,ball.rect.w/2
-       );
-      if (pos==null) continue;
-      double distance = PVectorD.dist(ballCenter, pos);
-      if (newPos==null||nearestDistanse > distance) {
-        hitWall=w;
-        newPos = pos;
-        nearestDistanse = distance;
+    while (true) {
+      PVectorD ballCenter=new PVectorD(ball.rect.centerX(), ball.rect.centerY());
+      PVectorD newPos =  null;
+      Double nearestDistanse = null;
+      Wall hitWall=null;
+      /*/*  */      for (int i = 0; i < walls.size(); i++) {
+        Wall w = walls.get(i);
+
+        PVectorD pos = calcCircleCenterOnCollisionD(
+          ballCenter,
+          ball.velocity, w.rect.getPosVecD(), w.vec, ball.rect.w/2
+          );
+        if (pos==null) continue;
+        double distance = PVectorD.dist(ballCenter, pos);
+        if (newPos==null||nearestDistanse > distance) {
+          hitWall=w;
+          newPos = pos;
+          nearestDistanse = distance;
+        }
       }
-    } 
-    if (newPos==null) {
-      return;
+      if (newPos==null) {
+        return;
+      }
+      markPoint(newPos.toFloat(), #ff0000);
+      fill(#ffff00);
+      stroke(#ffff00);
+      strokeWeight(8);
+      line(hitWall.rect.x, hitWall.rect.y, hitWall.rect.x+ hitWall.vec.toFloat().x, hitWall.rect.y+ hitWall.vec.toFloat().y);
+      //Collision
+      PVectorD v=ball.velocity.copy();
+      double radian=2*hitWall.vec.heading()-2*v.heading();
+      double speed=v.mag();
+      ball.velocity.rotate(radian);
+      PVector newPosF=newPos.toFloat();
+      ball.rect.setPos(newPosF.x-ball.rect.w/2, newPosF.y-ball.rect.h/2);
+      stroke(#ff0000);
+      println(ball.velocity);
+      //line(ball.rect.x,ball.rect.y,(ball.rect.x+ball.velocity.x)*20,(ball.rect.y+ball.velocity.y)*20);
+      isStopDraw=true;
     }
-    markPoint(newPos.toFloat(),#ff0000);
-    fill(#ffff00);
-    stroke(#ffff00);
-    strokeWeight(8);
-    line(hitWall.rect.x,  hitWall.rect.y,  hitWall.rect.x+ hitWall.vec.toFloat().x,  hitWall.rect.y+ hitWall.vec.toFloat().y);
-    //Collision
-    PVectorD v=ball.velocity.copy();
-    double radian=2*hitWall.vec.heading()-2*v.heading();
-    double speed=v.mag();
-    ball.velocity.rotate(radian);
-    PVector newPosF=newPos.toFloat();
-    ball.rect.setPos(newPosF.x-ball.rect.w/2, newPosF.y-ball.rect.h/2);
-    stroke(#ff0000);
-    println(ball.velocity);
-    //line(ball.rect.x,ball.rect.y,(ball.rect.x+ball.velocity.x)*20,(ball.rect.y+ball.velocity.y)*20);
-    isStopDraw=true;
   }
-    }
-    //Collision End
-    
+  //Collision End
+
   //}
 }
 
@@ -114,7 +114,7 @@ final class NewBall extends GameObject {
     fill(255);
     noStroke();
     Rect areaRect = area.rect;
-    
+
 
     if ((rect.x+fVec.x < areaRect.x && velocity.x < 0) || (rect.x+fVec.x+rect.w > areaRect.x + areaRect.w && velocity.x > 0)) {
       velocity.x*=-1;
@@ -125,7 +125,7 @@ final class NewBall extends GameObject {
 
     rect.x+=velocity.toFloat().x;
     rect.y+=velocity.toFloat().y;
-    
+
     ps.origin.set(rect.centerX(), rect.centerY());
     ps.applyForce(getEffectVec());
     ps.run();

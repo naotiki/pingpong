@@ -25,7 +25,7 @@ abstract class GameObject extends GameObjectTree {
     draw();
   }
   // 他のGOの影響を受けないようにする
-  private void resetDraw(){
+  private void resetDraw() {
     fill(255);
     strokeWeight(1);
     noStroke();

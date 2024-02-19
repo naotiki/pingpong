@@ -9,9 +9,9 @@ final class Area extends Pointerble {
     this(scene, rect, scene, bgColor);
   }
   void draw() {
-    if(bgColor==NO_COLOR){
+    if (bgColor==NO_COLOR) {
       noFill();
-    } else{
+    } else {
       fill(bgColor);
     }
     rect(rect.x, rect.y, rect.w, rect.h);

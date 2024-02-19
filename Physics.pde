@@ -1,6 +1,6 @@
 import java.lang.Math;
 final float error = radians(1);
-private PVector calcCrossPoint(PVector object, PVector velocity, PVector target, PVector vector){
+private PVector calcCrossPoint(PVector object, PVector velocity, PVector target, PVector vector) {
   Float tan1 = tan(velocity.heading());
   Float tan2 = tan(vector.heading());//vector.heading()
   Float x=null;
@@ -43,7 +43,7 @@ private PVector calcCrossPoint(PVector object, PVector velocity, PVector target,
     }
   }
   // x,yが衝突点候補
-  return new PVector(x,y);
+  return new PVector(x, y);
 }
 //Nullable
 // object 物体の位置
@@ -51,10 +51,10 @@ private PVector calcCrossPoint(PVector object, PVector velocity, PVector target,
 // target コライダーの原点
 // vector コライダーの長さと方向
 PVector calcCollisionPoint(PVector object, PVector velocity, PVector target, PVector vector) {
-  
+
   //println("x:"+str(x)+", y:"+str(y));
   // ここからはx,yが定義域内か判定
-  PVector pos = calcCrossPoint(object,velocity,target,vector);
+  PVector pos = calcCrossPoint(object, velocity, target, vector);
   /*  println(PVector.sub(pos,object).heading());
    println(velocity.heading());
    println(PVector.sub(pos,target).heading());
@@ -70,26 +70,26 @@ PVector calcCollisionPoint(PVector object, PVector velocity, PVector target, PVe
     ? pos : null;
 }
 //https://www.desmos.com/calculator/tjrvntf1t2
-PVector calcCircleCenterOnCollision(PVector object, PVector velocity, PVector target, PVector vector,float radius){
+PVector calcCircleCenterOnCollision(PVector object, PVector velocity, PVector target, PVector vector, float radius) {
   float angle0=velocity.heading();
   float angle1=vector.heading();
   float angle=angle1-angle0;
-  PVector crossPos = calcCrossPoint(object,velocity,target,vector);
+  PVector crossPos = calcCrossPoint(object, velocity, target, vector);
   //衝突時の円の中心と交点のずれ dx,dy
   float addX = (radius*cos(angle0+PI))/sin(angle0-angle1);
   float addY = (radius*sin(angle0+PI))/sin(angle0-angle1);
-  PVector diff=PVector.sub(object,crossPos);
+  PVector diff=PVector.sub(object, crossPos);
   //候補
   float xSign=Math.signum(diff.x*addX);
   float ySign=Math.signum(diff.y*addY);
-  PVector centerPos =  crossPos.copy().add(addX*xSign,addY*ySign);
+  PVector centerPos =  crossPos.copy().add(addX*xSign, addY*ySign);
   float l= radius*cos(angle)/sin(angle);
-  PVector collosionPoint = crossPos.copy().add(l*cos(angle1+PI)*xSign,l*sin(angle1+PI)*ySign);
+  PVector collosionPoint = crossPos.copy().add(l*cos(angle1+PI)*xSign, l*sin(angle1+PI)*ySign);
   //markPoint(centerPos,#ff0000);
   //markPoint(collosionPoint,#00ffff);
   println(PVector.sub(collosionPoint, target).heading());
   return abs(PVector.sub(centerPos, object).heading() - velocity.heading()) <= error// 速度とオブジェクト→posへの角度が同じ
     && abs(PVector.sub(collosionPoint, target).heading() - vector.heading()) <=  error
-    && PVector.dist(centerPos,object) <= velocity.mag() 
-    && PVector.dist(collosionPoint,target) <= vector.mag() ? centerPos : null;
+    && PVector.dist(centerPos, object) <= velocity.mag()
+    && PVector.dist(collosionPoint, target) <= vector.mag() ? centerPos : null;
 }

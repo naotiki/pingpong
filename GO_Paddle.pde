@@ -16,7 +16,7 @@ final class Paddle extends GameObject {
     if (rect.y > area.y) {
       rect.y -= 10*UNIT;
     }
-     yPosWithin(area);
+    yPosWithin(area);
   }
   void down(Rect area) {
     if (rect.bottom() < area.bottom()) {
@@ -25,7 +25,7 @@ final class Paddle extends GameObject {
     yPosWithin(area);
   }
 
-  void yPosWithin(Rect area){
-    rect.y = rect.y < area.y ? area.y : rect.bottom() > area.bottom() ? area.bottom()-rect.h : rect.y; 
+  void yPosWithin(Rect area) {
+    rect.y = rect.y < area.y ? area.y : rect.bottom() > area.bottom() ? area.bottom()-rect.h : rect.y;
   }
 }
