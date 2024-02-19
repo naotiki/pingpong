@@ -2,7 +2,7 @@ import java.util.TreeMap;
 class Timer {
     int time;
     long lastTime;
-    Map<Long,TimeoutListener> timeouts=new TreeMap<Long,TimeoutListener>();
+    TreeMap<Long,TimeoutListener> timeouts=new TreeMap<Long,TimeoutListener>();
     Timer() {
         this.time = 0;
     }
@@ -15,7 +15,7 @@ class Timer {
     }
     void update(){
         long currentTime=System.currentTimeMillis();
-        for(long key:timeouts.keySet()){
+        for(long key:((Map<Long,TimeoutListener>)timeouts.clone()).keySet()){
             if(key<=currentTime){
                 timeouts.get(key).onTimeout();
                 timeouts.remove(key);

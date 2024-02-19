@@ -18,3 +18,6 @@ boolean isParentsEnabled(GameObject go) {
 }
 
 
+<T> List<T> cloneList(List<T> list){
+  return ((List<T>)((ArrayList<T>)list).clone());
+}

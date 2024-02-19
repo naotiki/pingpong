@@ -1,5 +1,5 @@
 final class MainScene extends Scene {
-
+  final float ITEM_EXPAND_AMOUNT=50;
   final color playerColor = #ff5555;
   final color player2Color = #5555ff;
 
@@ -7,7 +7,11 @@ final class MainScene extends Scene {
   final Area gameArea = new Area(this, new Rect(0, 100, screen.getWidth(), screen.getHeight()-100), #000000);
   final Paddle player = new Paddle(gameArea, gameArea.posByAnchor(PaddleSize.pos(50, 0), Anchor.MiddleLeft), playerColor);
   final Paddle player2 = new Paddle(gameArea, gameArea.posByAnchor(PaddleSize.pos(-50, 0), Anchor.MiddleRight), player2Color);
-  final Ball ball = new Ball(gameArea, BallSize.pos(gameArea.centerX(), gameArea.centerY()), gameArea);
+  final List<Ball> balls = new ArrayList<Ball>(){
+    {
+      add(new Ball(gameArea, BallSize.pos(gameArea.centerX(), gameArea.centerY()), gameArea));
+    }
+  };
 
 
   final Area uiArea = new Area(this, new Rect(0, 0, screen.getWidth(), 100), #dddddd);
@@ -26,7 +30,7 @@ final class MainScene extends Scene {
   final List<Item> items = new ArrayList<Item>();
 
   private boolean isMainGameUpdateEnabled = true;
-  Paddle playerHasBall = null; 
+  Map<Ball,Paddle> ballPlayerMap = new HashMap<Ball,Paddle>(); 
 
   void setup() {
     overRayArea.enabled=false;
@@ -64,37 +68,47 @@ final class MainScene extends Scene {
   void checkItem(){
     for(int i=0;i<items.size();i++){
       Item item=items.get(i);
-      if(item.rect.intersects(ball.rect)){
-
+      for(Ball ball : cloneList(balls)){
+        if(item.rect.intersects(ball.rect)){
+        Paddle playerHasBall=ballPlayerMap.get(ball);
         switch (item.type) {
           case AddBall:
-
+            Ball b=new Ball(gameArea, BallSize.pos(ball.rect.x, ball.rect.y), gameArea);
+            b.setup();
+            b.velocityVec.rotate(random(-PI/4,PI/4));
+            b.setParticleColor(ball.ps.tintColor);
+            balls.add(b);
+            ballPlayerMap.put(b,playerHasBall);
           break;
           case Expand:
-
-          break;
-          case Wall:
-            playerHasBall.rect.h+=50;
+            playerHasBall.rect.h+=ITEM_EXPAND_AMOUNT;
             Paddle p=playerHasBall;
+            println("wall!");
             timer.setTimeout(10000,()->{
-              p.rect.h-=50;
+              println("wall end!");
+              p.rect.h-=ITEM_EXPAND_AMOUNT;
               p.yPosWithin(gameArea.rect);
             });
           break;
+          case Wall:
+            
+          break;
         }
-
         item.destroy();
         items.remove(i);
-      } 
+      }
+      }
+
     } 
   }
+  
   void mainGameUpdate(){
-    if(frameCount%(FRAME_RATE*round(random(20,25)))==0 && items.size()<3){
+    if(frameCount%(FRAME_RATE*round(random(5,6)))==0 && items.size()<3){
       itemSpawn();
     }
     checkItem();
-
-    //プレイヤーの反射処理
+    for(Ball ball : cloneList(balls)){
+      //プレイヤーの反射処理
     Rect ballRect= ball.rect;
     Rect playerRect = player.rect;
     Rect player2Rect = player2.rect;
@@ -103,7 +117,7 @@ final class MainScene extends Scene {
       && ballRect.right() > playerRect.right()
       && ballRect.bottom() > playerRect.top() && ballRect.top() < playerRect.bottom()
       ) {
-        playerHasBall=player;
+        ballPlayerMap.put(ball,player);
         ball.setParticleColor(playerColor);
         ball.velocityVec.x *=-1;
     }
@@ -112,7 +126,7 @@ final class MainScene extends Scene {
       && ballRect.left() < player2Rect.left()
       && ballRect.bottom() > player2Rect.top() && ballRect.top() < player2Rect.bottom()
       ) {
-        playerHasBall=player2;
+         ballPlayerMap.put(ball,player2);
         ball.setParticleColor(player2Color);
         ball.velocityVec.x *=-1;
     }
@@ -120,14 +134,30 @@ final class MainScene extends Scene {
     if (ballRect.right() > gameArea.rect.right()) {
       score1++;
       score1Text.text=str(score1);
-      ball.reset();
+      if(balls.size()>1){
+        ball.destroy();
+        balls.remove(ball);
+        ballPlayerMap.remove(ball);
+      }
+      else{
+        ball.reset();
+      }
     }
 
     if (ballRect.left() < gameArea.rect.left()) {
       score2++;
       score2Text.text=str(score2);
-      ball.reset();
+      if(balls.size()>1){
+        ball.destroy();
+        balls.remove(ball);
+        ballPlayerMap.remove(ball);
+      }
+      else{
+        ball.reset();
+      }
     }
+    };
+    
 
     // 移動処理
     if (keyEventManager.isPressKey('w')) {
@@ -144,7 +174,7 @@ final class MainScene extends Scene {
     }
 
     //autoMan(gameArea,player,ball);
-    autoMan(gameArea, player2, ball);
+    //autoMan(gameArea, player2, ball);
 
     
   }

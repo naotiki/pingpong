@@ -38,12 +38,12 @@ class SceneManager {
   }
 
   private void change(String sceneId, Scene scene) {
-    activeScene.destroy();
+    activeScene.sceneDestroy();
     activeScene = scene;
     //旧Sceneの参照が外れるのでGCの実行を提案
     System.gc();
-    activeScene.sceneSetup();
     activeSceneId = sceneId;
+    activeScene.sceneSetup();
   }
 
   void change(String sceneId) {
