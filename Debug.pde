@@ -1,4 +1,4 @@
-private final boolean isDebug = true;
+private final boolean isDebug = false;
 void debugSetup() {
   DebugApplet debugApplet = new DebugApplet();
   PApplet.runSketch(new String[]{"Debug"}, debugApplet);

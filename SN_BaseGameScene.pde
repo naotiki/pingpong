@@ -1,4 +1,4 @@
-final class MainScene extends Scene {
+class BaseGameScene extends Scene {
   final float ITEM_EXPAND_AMOUNT=50;
   final color playerColor = #ff5555;
   final color player2Color = #5555ff;
@@ -26,6 +26,17 @@ final class MainScene extends Scene {
   final Button restartButton = new Button(menuOverrayArea, menuOverrayArea.posByAnchor(new Rect(0, -80, 300, 50), Anchor.MiddleCenter), this, "やり直す");
   final Button titleButton = new Button(menuOverrayArea, menuOverrayArea.posByAnchor(new Rect(0, 0, 300, 50), Anchor.MiddleCenter), this, "タイトルに戻る");
   final Button menuCancelButton = new Button(menuOverrayArea, menuOverrayArea.posByAnchor(new Rect(0, 80, 300, 50), Anchor.MiddleCenter), this, "閉じる");
+
+  final Area resultOverrayArea = new Area(this, new Rect(0, 0, screen.getWidth(), screen.getHeight()), #dd000000);
+  final Text resultText = new Text(resultOverrayArea, resultOverrayArea.posByAnchor(new Rect(0, 50), Anchor.TopCenter), "", 50, #ffffff);
+  final Text resultScore1Text = new Text(resultOverrayArea, resultOverrayArea.posByAnchor(new Rect(-100, -80), Anchor.MiddleCenter), "0", 50, playerColor);
+  final Text _text = new Text(resultOverrayArea, resultOverrayArea.posByAnchor(new Rect(0, -80), Anchor.MiddleCenter), "-", 50, #ffffff);
+  final Text resultScore2Text = new Text(resultOverrayArea, resultOverrayArea.posByAnchor(new Rect(100, -80), Anchor.MiddleCenter), "0", 50, player2Color);
+  final Button resultRestartButton = new Button(resultOverrayArea, resultOverrayArea.posByAnchor(new Rect(0, 0, 300, 50), Anchor.MiddleCenter), this, "もう一度");
+  final Button resultTitleButton = new Button(resultOverrayArea, resultOverrayArea.posByAnchor(new Rect(0, 80, 300, 50), Anchor.MiddleCenter), this, "タイトルに戻る");
+  
+
+
 
   private boolean isMainGameUpdateEnabled = true;
   private final List<Item> items = new ArrayList<Item>();
@@ -66,8 +77,11 @@ final class MainScene extends Scene {
     allWalls.addAll(bottomWalls);
     return allWalls;
   }
-
+  void reloadSelf(){
+    sceneManager.changeOneshot(new BaseGameScene());
+  }
   void setup() {
+    resultOverrayArea.enabled=false;
     menuOverrayArea.enabled=false;
     menuButton.setOnClickListener(()-> {
       menuOverrayArea.enabled=true;
@@ -82,13 +96,17 @@ final class MainScene extends Scene {
     }
     );
     restartButton.setOnClickListener(()-> {
-      sceneManager.changeOneshot(new MainScene());
-    }
-    );
+      reloadSelf();
+    });
+    resultRestartButton.setOnClickListener(()-> {
+      reloadSelf();
+    });
     titleButton.setOnClickListener(()-> {
       sceneManager.change("title");
-    }
-    );
+    });
+    resultTitleButton.setOnClickListener(()-> {
+      sceneManager.change("title");
+    });
   }
   void update() {
     if (isMainGameUpdateEnabled) {
@@ -106,8 +124,11 @@ final class MainScene extends Scene {
       Item item=items.get(i);
       
       for (Ball ball : cloneList(balls)) {
+        Paddle playerHasBall=ballPlayerMap.get(ball);
+        if(playerHasBall==null) continue;
         if (item.rect.intersects(ball.rect)) {
-          Paddle playerHasBall=ballPlayerMap.get(ball);
+          
+
           switch (item.type) {
           case AddBall:
             Ball b=new Ball(gameArea, BallSize.pos(ball.rect.x, ball.rect.y), gameArea);
@@ -215,10 +236,10 @@ final class MainScene extends Scene {
         if (balls.size()>1) {
           ball.destroy();
           balls.remove(ball);
-          ballPlayerMap.remove(ball);
         } else {
           ball.reset();
         }
+        ballPlayerMap.remove(ball);
       }
 
       if (ballRect.left() < gameArea.rect.left()) {
@@ -227,30 +248,25 @@ final class MainScene extends Scene {
         if (balls.size()>1) {
           ball.destroy();
           balls.remove(ball);
-          ballPlayerMap.remove(ball);
         } else {
           ball.reset();
         }
+        ballPlayerMap.remove(ball);
       }
     };
 
 
-    // 移動処理
-    if (keyEventManager.isPressKey('w')) {
-      player.up(gameArea.rect);
-    }
-    if (keyEventManager.isPressKey('s')) {
-      player.down(gameArea.rect);
-    }
-    if (keyEventManager.isPressKeyCode(UP)) {
-      player2.up(gameArea.rect);
-    }
-    if (keyEventManager.isPressKeyCode(DOWN)) {
-      player2.down(gameArea.rect);
-    }
 
     //autoMan(gameArea,player,ball);
     //autoMan(gameArea, player2, ball);
+    if(score1>=10||score2>=10){
+      resultOverrayArea.enabled=true;
+      gameArea.enabled=false;
+      isMainGameUpdateEnabled = false;
+      resultText.text=score1>score2?"1Pの勝ち！":"2Pの勝ち！";
+      resultScore1Text.text=str(score1);
+      resultScore2Text.text=str(score2);
+    }
   }
 
   void keyPressed() {

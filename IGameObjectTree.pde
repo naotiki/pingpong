@@ -47,7 +47,7 @@ abstract class GameObjectTree {
   private final void unlock() {
     isLocked=false;
     gameObjects.addAll(addGameObjects);
-    removeGameObjects.forEach(g-> {
+    cloneList(removeGameObjects).forEach(g-> {
       gameObjects.remove(g);
     }
     );

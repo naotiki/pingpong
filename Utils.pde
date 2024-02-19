@@ -1,14 +1,4 @@
-//Demo用？
-//TODO 複数ボールに対応
-void autoMan(Area area, Paddle player, Ball ball) {
-  Rect playerRect=player.rect;
-  Rect ballRect=ball.rect;
-  if (ballRect.centerY()<playerRect.centerY()) {
-    player.up(area.rect);
-  } else if (ballRect.centerY()>playerRect.centerY()) {
-    player.down(area.rect);
-  }
-}
+
 
 // 最上層の親のenabledをチェックする
 boolean isParentsEnabled(GameObject go) {

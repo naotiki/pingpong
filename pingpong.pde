@@ -24,7 +24,6 @@ void setup() {
   }
   );
   sceneManager.change("title");
-  sceneManager.changeOneshot(new MainScene());
   //sceneManager.change("main");
   //Class<MainScene> sampleClass = MainScene.class.getConstructor().newInstance();
   if (isDebug) {
